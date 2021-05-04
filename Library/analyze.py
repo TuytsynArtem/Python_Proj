@@ -6,7 +6,7 @@ Created on Sat Apr  3 17:36:07 2021
 """
 import pandas as pd
 import pprint as pp
-
+db = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Pokedex')
 def analyzer(name):
         db = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Pokedex')
         a = []
@@ -37,6 +37,7 @@ def analyzer(name):
         dic = dict(zip(a,b))
         pp.pprint(dic)
         return a,b
+    
         
             
         
