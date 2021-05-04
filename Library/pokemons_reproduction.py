@@ -47,25 +47,22 @@ def cheker(id1,id2,d_b):
         print(d_b["Egg Group II"][id2])
 
         if(d_b["Egg Group I"][id2]!="-" and d_b["Egg Group II"][id2]!="-"):
-            if((proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
+            if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
                  +proverka(d_b["Egg Group I"][id1],d_b["Egg Group II"][id2])
                  +proverka(d_b["Egg Group II"][id1],d_b["Egg Group I"][id2])
-                 +proverka(d_b["Egg Group II"][id1],d_b["Egg Group II"][id2]))
-                >0):
+                 +proverka(d_b["Egg Group II"][id1],d_b["Egg Group II"][id2]))>0):
                 return True
 
         elif(d_b["Egg Group I"][id2]!="-" and d_b["Egg Group II"][id2]=="-"):
-            if((proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
-                 +proverka(d_b["Egg Group II"][id1],d_b["Egg Group I"][id2]))
-                >0):
+            if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
+                 +proverka(d_b["Egg Group II"][id1],d_b["Egg Group I"][id2]))>0):
                 return True
 
     elif(d_b["Egg Group I"][id1]!="-" and d_b["Egg Group II"][id1]=="-"):
 
         if(d_b["Egg Group I"][id2]!="-" and d_b["Egg Group II"][id2]!="-"):
-            if((proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
-                 +proverka(d_b["Egg Group I"][id1],d_b["Egg Group II"][id2]))
-                >0):
+            if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
+                 +proverka(d_b["Egg Group I"][id1],d_b["Egg Group II"][id2]))>0):
                 return True
 
         elif(d_b["Egg Group I"][id2]!="-" and d_b["Egg Group II"][id2]=="-"):
