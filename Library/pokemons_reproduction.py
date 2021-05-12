@@ -5,12 +5,14 @@ Created on Tue May  4 19:34:32 2021
 @author: User
 """
 import pandas as pd
+import random
+import matplotlib.pyplot as plt
 # import mathplotlib as plt
 #import pprint as pp
 data = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Sheet1',index_col=0)
 eggs_connection = pd.read_excel('C:/Work/Data/eggs_connection.xlsx',sheet_name='Лист1',index_col=0)
 
-one,two=int(input("Введите 1-ое id: ")),int(input("Введите 2-ое id: "))
+one,two,kolvo=int(input("Введите 1-ое id: ")),int(input("Введите 2-ое id: ")),int(input("Введите количество размножений для анализа вероятностей: "))
 def proverka(a_1,b_1):
     '''
     Parameters
@@ -70,9 +72,149 @@ def cheker(id1,id2,d_b):
                 return True
 
     return False
-# def Reproduction(id1,id2,d_b):
+def analyze(spisok):
+    t1 = {}
+    t2 = {}
+    for i in range(0,len(spisok)):
+        if i%2>0:
+            if t1.get(spisok[i])!=None:
+                t1[spisok[i]]+=1
+            else:
+                t1[spisok[i]]=1
+        else:
+            # if t2[spisok[i]].get(key[,default])!=None:
+            if t2.get(spisok[i])!=None:
+                t2[spisok[i]]+=1
+            else:
+                t2[spisok[i]]=1
+    print(t1)
+    klv = t1.keys()
+    print(klv)
+    znch = t1.values()
+    print(znch)
+    plt.pie(klv,labels=znch,autopct='%1.1f%%', shadow=True, startangle=90)
+    plt.axis('equal')
+    plt.title("Percentage of Different Types of Pokemon")
+    plt.plot()
+    fig=plt.gcf()
+    fig.set_size_inches(7,7)
+    plt.show()
+    
+    
+    
+    
+            
+            
+            
+            
+            
+            
+        
+        
+        
+def Reproduction(raz,dva,baza,kolvo):
+    for i in range(kolvo):
+        typelist = []
+        pokemons = []
+        flag = True
+        if baza["Type I"][raz]!="nan":
+            typelist.append(baza["Type I"][raz])
+        
+        if baza["Type II"][raz]!="nan":
+            typelist.append(baza["Type II"][raz])
+        
+        if baza["Type I"][dva]!="nan":
+            for i in typelist:
+                if i == baza["Type I"][dva]:
+                    flag = False
+            if flag:
+                typelist.append(baza["Type I"][dva])
+                
+                    
+        flag = True
+                
+        if baza["Type II"][dva]!="nan":
+            
+             for i in typelist:
+                if i == baza["Type II"][dva]:
+                    flag = False
+             if flag:
+                 typelist.append(baza["Type II"][dva])
+            
+        if len(typelist) == 1:
+            pokemons.append(typelist[0])
+            if random.random() == 1: 
+                pokemons.append(typelist[0])
+            else:
+                pokemons.append("no Type")
+                
+        elif len(typelist) == 2:
+            if random.random() == 1: 
+                pokemons.append(typelist[0])
+            else:
+                pokemons.append(typelist[1])
+            r = random.randint(0,2)
+            if r == 0: 
+                pokemons.append(typelist[0])
+            elif r == 1:
+                pokemons.append(typelist[1])
+            elif r == 2:
+                pokemons.append("no Type")
+            
+            
+            
+        elif len(typelist) == 3:
+            r = random.randint(0,2)
+            if r == 0: 
+                pokemons.append(typelist[0])
+            elif r == 1:
+                pokemons.append(typelist[1])
+            elif r == 2:
+                pokemons.append(typelist[2])
+            r = random.randint(0,3)
+            if r == 0: 
+                pokemons.append(typelist[0])
+            elif r == 1:
+                pokemons.append(typelist[1])
+            elif r == 2:
+                pokemons.append(typelist[2])
+            elif r == 3:
+                pokemons.append("no Type")
+            
+            
+        elif len(typelist) == 4:
+            r = random.randint(0,3)
+            if r == 0: 
+                pokemons.append(typelist[0])
+            elif r == 1:
+                pokemons.append(typelist[1])
+            elif r == 2:
+                pokemons.append(typelist[2])
+            elif r == 3:
+                pokemons.append("no Type")
+            r = random.randint(0,3)
+            if r == 0: 
+                pokemons.append(typelist[0])
+            elif r == 1:
+                pokemons.append(typelist[1])
+            elif r == 2:
+                pokemons.append(typelist[2])
+            elif r == 3:
+                pokemons.append(typelist[3])
+            elif r == 3:
+                pokemons.append("no Type")
+    analyze(pokemons)
+
+            
+        
+        
+    
+    
+    
+    
 if cheker(one,two,data):
     print("размножение возможно:")
-#     Reproduction(id1,id2,d_b)
-# else:
-#     print("размножение невозможно:")
+    Reproduction(one,two,data,kolvo)
+
+else:
+    print("размножение невозможно:")
