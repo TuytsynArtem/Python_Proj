@@ -4,15 +4,14 @@ Created on Tue May  4 19:34:32 2021
 
 @author: User
 """
-import pandas as pd
 import random
+import pandas as pd
 import matplotlib.pyplot as plt
-# import mathplotlib as plt
-#import pprint as pp
 data = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Sheet1',index_col=0)
 eggs_connection = pd.read_excel('C:/Work/Data/eggs_connection.xlsx',sheet_name='Лист1',index_col=0)
 
-one,two,kolvo=int(input("Введите 1-ое id: ")),int(input("Введите 2-ое id: ")),int(input("Введите количество размножений для анализа вероятностей: "))
+one,two=int(input("Введите 1-ое id: ")),int(input("Введите 2-ое id: "))
+kolvo=int(input("Введите количество размножений для анализа вероятностей: "))
 def proverka(a_1,b_1):
     '''
     Parameters
@@ -70,108 +69,87 @@ def cheker(id1,id2,d_b):
         elif(d_b["Egg Group I"][id2]!="-" and d_b["Egg Group II"][id2]=="-"):
             if (proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2]))>0:
                 return True
-
     return False
+def avrstats(listok,b_z):
+    '''
+    Parameters
+    ----------
+    listok : TYPE Array
+        list of pokemons type
+    d_z : TYPE DataFrame
+        database of pokemons
+    Returns True
+    -------
+    False.
 
-def avrstats(listok,bz):
-    print("hfersguyvfgjivgbhiewb")
-    HP=0
-    aHP=0
-    Atk=0
-    aAtk=0
-    Def=0
-    aDef=0
-    SpA =0
-    aSpA=0
-    SpD=0
-    aSpD=0
-    Spe=0
-    aSpe=0
-
+    '''
+    h_p=0
+    a_tk=0
+    de_f=0
+    spis_a =0
+    spis_d=0
+    spis_e=0
+    avr = 0
     podhodyat = {}
     for i in range (1,664):
         j=0
         while j<len(listok):
-            if bz["Type I"][i]==listok[j] and bz["Type II"][i]==listok[j+1]:
-                if podhodyat.get(i)==None:
+            if b_z["Type I"][i]==listok[j] and b_z["Type II"][i]==listok[j+1]:
+                if podhodyat.get(i) is None:
                     podhodyat[i]=0
             j+=2
     for i in list(podhodyat):
-        HP += bz["HP"][i]
-        aHP +=1
-        aHP =HP/aHP
-        
-        Atk += bz["Atk"][i]
-        aAtk +=1
-        aAtk =Atk/aAtk
-        
-        Def += bz["Def"][i]
-        aDef +=1
-        aDef =Def/aDef
-        
-        SpA += bz["SpA"][i]
-        aSpA +=1
-        aSpA =SpA/aSpA
-        
-        SpD += bz["SpD"][i]
-        aSpD +=1
-        aSpD =SpD/aSpD
-        
-        Spe += bz["Spe"][i]
-        aSpe +=1
-        aSpe =Spe/aSpe
-    arr = [aHP,aAtk,aDef,aSpA,aSpD,aSpe]
-    arr2 = ["aHP","aAtk","aDef","aSpA","aSpD","aSpe"]
-    
+        h_p += b_z["HP"][i]
+        a_tk += b_z["Atk"][i]
+        de_f += b_z["Def"][i]
+        spis_a += b_z["spisA"][i]
+        spis_d += b_z["spisD"][i]
+        spis_e += b_z["spise"][i]
+        avr +=1
+    arr = [h_p/avr,a_tk/avr,de_f/avr,spis_a/avr,spis_d/avr,spis_e/avr]
+    arr2 = ["HP","Atk","Def","spisA","spisD","spise"]
     fig = plt.figure()
     a_x = fig.add_axes([0,0,1,1])
     a_x.bar(arr2,arr)
     fig.set_figwidth(16)
+    plt.title("Average Stats")
     plt.show()
-     
-        
-      
-        
-        
-            
-def analyze(spisok):
-    t1 = {}
-    t2 = {}
-    for i in range(0,len(spisok)):
+def analyze(spisisok):
+    '''
+    Parameters
+    ----------
+    spisisok : TYPE Array
+        list of pokemons type
+    Returns True
+    -------
+    False.
+
+    '''
+    t_1 = {}
+    t_2 = {}
+    for i,spis in enumerate(spisisok):
         if i%2>0:
-            if t2.get(spisok[i])!=None:
-                t2[spisok[i]]+=1
+            if t_2.get(spis) is not None:
+                t_2[spis]+=1
             else:
-                t2[spisok[i]]=1
+                t_2[spis]=1
         else:
-            if t1.get(spisok[i])!=None:
-                t1[spisok[i]]+=1
+            if t_1.get(spis) is not None:
+                t_1[spis]+=1
             else:
-                t1[spisok[i]]=1
+                t_1[spis]=1
     eggs_data = pd.read_excel('C:/Work/Data/Types.xlsx',sheet_name='Лист1',index_col=0)
-    
-    klv = list(t1.keys())
-    for i in range(0,len(klv)):
-        # print(i)
-        klv[i]=eggs_data["Type_name"][klv[i]]
-        
-    znch = list(t1.values())
-    
-    klv2 = list(t2.keys())
-    for i in range(0,len(klv2)):
-        if  klv2[i]!=0:
-            klv2[i]=eggs_data["Type_name"][klv2[i]]
+    klv = list(t_1.keys())
+    for i,klvshka in enumerate(len(klv)):
+        klv[i]=eggs_data["Type_name"][klvshka]
+    znch = list(t_1.values())
+    klv2 = list(t_2.keys())
+    for i,klvshka2 in enumerate(len(klv2)):
+        if  klvshka2!=0:
+            klv2[i]=eggs_data["Type_name"][klvshka2]
         else:
             klv2[i]="No Type"
-         
-        
-    znch2 = list(t2.values())
-    # print(t1)
-    # print(t2)
-    
-    # print(klv)
-    
-    # print(znch)
+    znch2 = list(t_2.values())
     plt.pie(znch,labels=klv,autopct='%1.1f%%', shadow=True, startangle=90)
     plt.axis('equal')
     plt.title("Percentage of Different Types I of Pokemon")
@@ -179,7 +157,6 @@ def analyze(spisok):
     fig=plt.gcf()
     fig.set_size_inches(7,7)
     plt.show()
-    
     plt.pie(znch2,labels=klv2,autopct='%1.1f%%', shadow=True, startangle=90)
     plt.axis('equal')
     plt.title("Percentage of Different Types II of Pokemon")
@@ -187,137 +164,106 @@ def analyze(spisok):
     fig=plt.gcf()
     fig.set_size_inches(7,7)
     plt.show()
-    
-    
-    
-    
-            
-            
-            
-            
-            
-            
-        
-        
-        
-def Reproduction(raz,dva,baza,kolvo):   
-    
+def reproduction(raz,dva,baza,kol):
+    '''
+    Parameters
+    ----------
+    raz : TYPE Integer
+        id of pokemon
+    dva : TYPE Integer
+        id of pokemon
+    baza : TYPE DataFrame
+        database of pokemons
+    kol : TYPE Integer
+    ammount of cicle
+    Returns True
+    -------
+    False.
+
+    '''
     typelist = []
     pokemons = []
     flag = True
-    # print(baza["Type I"][raz])
-    # print(baza["Type II"][raz])
-    # print(baza["Type I"][dva])
-    # print(baza["Type II"][dva])
-    
     typelist.append(baza["Type I"][raz])
-    
     if baza["Type II"][raz]!=0:
         typelist.append(baza["Type II"][raz])
-    
     if baza["Type I"][dva]!=0:
         for i in typelist:
             if i == baza["Type I"][dva]:
                 flag = False
         if flag:
             typelist.append(baza["Type I"][dva])
-            
-                
     flag = True
-            
     if baza["Type II"][dva]!=0:
-        
-         for i in typelist:
+        for i in typelist:
             if i == baza["Type II"][dva]:
                 flag = False
-         if flag:
-             typelist.append(baza["Type II"][dva])
-                 
-    for i in range(kolvo):    
+        if flag:
+            typelist.append(baza["Type II"][dva])
+    for i in range(kol):
         if len(typelist) == 1:
             pokemons.append(typelist[0])
-            r = random.randint(0,1)
-            if r == 1: 
+            r_r = random.randint(0,1)
+            if r_r == 1:
                 pokemons.append(typelist[0])
             else:
                 pokemons.append(0)
-                
         elif len(typelist) == 2:
-            r = random.randint(0,1)
-            if  r == 1: 
+            r_r = random.randint(0,1)
+            if  r_r == 1:
                 pokemons.append(typelist[0])
             else:
                 pokemons.append(typelist[1])
-                
-                
-            r = random.randint(0,2)
-            
-            if r == 0: 
+            r_r = random.randint(0,2)
+            if r_r == 0:
                 pokemons.append(typelist[0])
-            elif r == 1:
+            elif r_r == 1:
                 pokemons.append(typelist[1])
-            elif r == 2:
+            elif r_r == 2:
                 pokemons.append(0)
-                
-            
-            
-            
         elif len(typelist) == 3:
-            r = random.randint(0,2)
-            if r == 0: 
+            r_r = random.randint(0,2)
+            if r_r == 0:
                 pokemons.append(typelist[0])
-            elif r == 1:
+            elif r_r == 1:
                 pokemons.append(typelist[1])
-            elif r == 2:
+            elif r_r == 2:
                 pokemons.append(typelist[2])
-            r = random.randint(0,3)
-            if r == 0: 
+            r_r = random.randint(0,3)
+            if r_r == 0:
                 pokemons.append(typelist[0])
-            elif r == 1:
+            elif r_r == 1:
                 pokemons.append(typelist[1])
-            elif r == 2:
+            elif r_r == 2:
                 pokemons.append(typelist[2])
-            elif r == 3:
+            elif r_r == 3:
                 pokemons.append(0)
-            
-            
         elif len(typelist) == 4:
-            r = random.randint(0,3)
-            if r == 0: 
+            r_r = random.randint(0,3)
+            if r_r == 0:
                 pokemons.append(typelist[0])
-            elif r == 1:
+            elif r_r == 1:
                 pokemons.append(typelist[1])
-            elif r == 2:
+            elif r_r == 2:
                 pokemons.append(typelist[2])
-            elif r == 3:
+            elif r_r == 3:
                 pokemons.append(typelist[3])
-                
-            r = random.randint(0,4)
-            if r == 0: 
+            r_r = random.randint(0,4)
+            if r_r == 0:
                 pokemons.append(typelist[0])
-            elif r == 1:
+            elif r_r == 1:
                 pokemons.append(typelist[1])
-            elif r == 2:
+            elif r_r == 2:
                 pokemons.append(typelist[2])
-            elif r == 3:
+            elif r_r == 3:
                 pokemons.append(typelist[3])
-            elif r == 4:
+            elif r_r == 4:
                 pokemons.append(0)
-    # print(typelist)
-    # print(pokemons)
     analyze(pokemons)
     avrstats(pokemons,baza)
-
-            
-        
-        
-    
-    
-    
-    
 if cheker(one,two,data):
     print("размножение возможно:")
-    Reproduction(one,two,data,kolvo)
+    reproduction(one,two,data,kolvo)
 
 else:
     print("размножение невозможно:")
