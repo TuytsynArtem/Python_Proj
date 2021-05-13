@@ -198,7 +198,9 @@ def reproduction(raz,dva,baza,kol):
     for i in range(kol):
         r_r = random.randint(0,len(typelist)-1)
         pokemons.append(typelist[r_r])
-        r_r = random.randint(0,len(typelist))
+        promejutok = r_r
+        while r_r == promejutok:
+            r_r = random.randint(0,len(typelist))
         if r_r == 0:
             pokemons.append(typelist[0])
         elif r_r == len(typelist):
