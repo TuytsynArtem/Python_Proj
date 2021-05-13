@@ -83,12 +83,7 @@ def avrstats(listok,b_z):
     False.
 
     '''
-    h_p=0
-    a_tk=0
-    de_f=0
-    spis_a =0
-    spis_d=0
-    spis_e=0
+    stats = [0,0,0,0,0,0]
     avr = 0
     podhodyat = {}
     for i in range (1,664):
@@ -99,15 +94,15 @@ def avrstats(listok,b_z):
                     podhodyat[i]=0
             j+=2
     for i in list(podhodyat):
-        h_p += b_z["HP"][i]
-        a_tk += b_z["Atk"][i]
-        de_f += b_z["Def"][i]
-        spis_a += b_z["spisA"][i]
-        spis_d += b_z["spisD"][i]
-        spis_e += b_z["spise"][i]
+        stats[0] += b_z["HP"][i]
+        stats[1] += b_z["Atk"][i]
+        stats[2] += b_z["Def"][i]
+        stats[3] += b_z["SpA"][i]
+        stats[4] += b_z["SpD"][i]
+        stats[5] += b_z["Spe"][i]
         avr +=1
-    arr = [h_p/avr,a_tk/avr,de_f/avr,spis_a/avr,spis_d/avr,spis_e/avr]
-    arr2 = ["HP","Atk","Def","spisA","spisD","spise"]
+    arr = [stats[0]/avr,stats[1]/avr,stats[2]/avr,stats[3]/avr,stats[4]/avr,stats[0]/avr]
+    arr2 = ["HP","Atk","Def","SpA","SpD","Spe"]
     fig = plt.figure()
     a_x = fig.add_axes([0,0,1,1])
     a_x.bar(arr2,arr)
@@ -140,11 +135,11 @@ def analyze(spisisok):
                 t_1[spis]=1
     eggs_data = pd.read_excel('C:/Work/Data/Types.xlsx',sheet_name='Лист1',index_col=0)
     klv = list(t_1.keys())
-    for i,klvshka in enumerate(len(klv)):
+    for i,klvshka in enumerate(klv):
         klv[i]=eggs_data["Type_name"][klvshka]
     znch = list(t_1.values())
     klv2 = list(t_2.keys())
-    for i,klvshka2 in enumerate(len(klv2)):
+    for i,klvshka2 in enumerate(klv2):
         if  klvshka2!=0:
             klv2[i]=eggs_data["Type_name"][klvshka2]
         else:
@@ -201,69 +196,19 @@ def reproduction(raz,dva,baza,kol):
         if flag:
             typelist.append(baza["Type II"][dva])
     for i in range(kol):
-        if len(typelist) == 1:
+        r_r = random.randint(0,len(typelist)-1)
+        pokemons.append(typelist[r_r])
+        r_r = random.randint(0,len(typelist))
+        if r_r == 0:
             pokemons.append(typelist[0])
-            r_r = random.randint(0,1)
-            if r_r == 1:
-                pokemons.append(typelist[0])
-            else:
-                pokemons.append(0)
-        elif len(typelist) == 2:
-            r_r = random.randint(0,1)
-            if  r_r == 1:
-                pokemons.append(typelist[0])
-            else:
-                pokemons.append(typelist[1])
-            r_r = random.randint(0,2)
-            if r_r == 0:
-                pokemons.append(typelist[0])
-            elif r_r == 1:
-                pokemons.append(typelist[1])
-            elif r_r == 2:
-                pokemons.append(0)
-        elif len(typelist) == 3:
-            r_r = random.randint(0,2)
-            if r_r == 0:
-                pokemons.append(typelist[0])
-            elif r_r == 1:
-                pokemons.append(typelist[1])
-            elif r_r == 2:
-                pokemons.append(typelist[2])
-            r_r = random.randint(0,3)
-            if r_r == 0:
-                pokemons.append(typelist[0])
-            elif r_r == 1:
-                pokemons.append(typelist[1])
-            elif r_r == 2:
-                pokemons.append(typelist[2])
-            elif r_r == 3:
-                pokemons.append(0)
-        elif len(typelist) == 4:
-            r_r = random.randint(0,3)
-            if r_r == 0:
-                pokemons.append(typelist[0])
-            elif r_r == 1:
-                pokemons.append(typelist[1])
-            elif r_r == 2:
-                pokemons.append(typelist[2])
-            elif r_r == 3:
-                pokemons.append(typelist[3])
-            r_r = random.randint(0,4)
-            if r_r == 0:
-                pokemons.append(typelist[0])
-            elif r_r == 1:
-                pokemons.append(typelist[1])
-            elif r_r == 2:
-                pokemons.append(typelist[2])
-            elif r_r == 3:
-                pokemons.append(typelist[3])
-            elif r_r == 4:
-                pokemons.append(0)
+        elif r_r == len(typelist):
+            pokemons.append(0)
+        else:
+            pokemons.append(typelist[r_r])
     analyze(pokemons)
     avrstats(pokemons,baza)
 if cheker(one,two,data):
     print("размножение возможно:")
     reproduction(one,two,data,kolvo)
-
 else:
     print("размножение невозможно:")
