@@ -7,6 +7,7 @@ Created on Tue May  4 19:34:32 2021
 import random
 import pandas as pd
 import matplotlib.pyplot as plt
+from plot import save,pie
 data = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Sheet1',index_col=0)
 eggs_connection = pd.read_excel('C:/Work/Data/eggs_connection.xlsx',sheet_name='Лист1',index_col=0)
 
@@ -102,11 +103,13 @@ def avrstats(listok,b_z):
         avr +=1
     arr = [stats[0]/avr,stats[1]/avr,stats[2]/avr,stats[3]/avr,stats[4]/avr,stats[0]/avr]
     arr2 = ["HP","Atk","Def","SpA","SpD","Spe"]
+    colors = list('rgbkym')
     fig = plt.figure()
     a_x = fig.add_axes([0,0,1,1])
-    a_x.bar(arr2,arr)
+    a_x.bar(arr2,arr,color = colors)
     fig.set_figwidth(16)
     plt.title("Average Stats")
+    save("C:/Work/Graphics/Avr_stats")
     plt.show()
 def analyze(tipes,abilki,pryatki):
     '''
@@ -119,6 +122,8 @@ def analyze(tipes,abilki,pryatki):
     False.
 
     '''
+    names = ["Ability I","Ability II","Hidden Ability","Type I","Type II"]
+    colors = list('rbygkm')
     eggs_data = pd.read_excel('C:/Work/Data/Types.xlsx',sheet_name='Лист1',index_col=0)
     ability_data = pd.read_excel('C:/Work/Data/Ability.xlsx',sheet_name='Лист1',index_col=0)
     t_1 = {}
@@ -145,22 +150,11 @@ def analyze(tipes,abilki,pryatki):
         else:
             klv2[i]="No Ability"
             
-            
+   
     znch2 = list(t_2.values())
-    plt.pie(znch,labels=klv,autopct='%1.1f%%', shadow=True, startangle=90)
-    plt.axis('equal')
-    plt.title("Percentage of Different Abilities I of Pokemons")
-    plt.plot()
-    fig=plt.gcf()
-    fig.set_size_inches(7,7)
-    plt.show()
-    plt.pie(znch2,labels=klv2,autopct='%1.1f%%', shadow=True, startangle=90)
-    plt.axis('equal')
-    plt.title("Percentage of Different Abilities II of Pokemons")
-    plt.plot()
-    fig=plt.gcf()
-    fig.set_size_inches(7,7)
-    plt.show()                
+    pie(znch,klv,colors,names[0])
+    pie(znch2,klv2,colors,names[1])
+    
     t_1 = {}
     for i,pryatki in enumerate(pryatki):
         if t_1.get(pryatki) is not None:
@@ -172,15 +166,12 @@ def analyze(tipes,abilki,pryatki):
         if  klvshka!=0:
             klv[i]=ability_data["Ability"][klvshka]
         else:
-            klv[i]="No t_1 Ability"
+            klv[i]="No Hidden Ability"
     znch = list(t_1.values())
     
-    plt.pie(znch,labels=klv,autopct='%1.1f%%', shadow=True, startangle=90)
-    plt.axis('equal')
-    plt.title("Percentage of Different Hidden Ability of Pokemons")
-    plt.plot()
-    fig=plt.gcf()
-    fig.set_size_inches(7,7)
+    pie(znch,klv,colors,names[2])
+    
+    save("C:/Work/Graphics/Hidden_Ability")
     plt.show()
     t_1 = {}
     t_2 = {}            
@@ -205,23 +196,9 @@ def analyze(tipes,abilki,pryatki):
             klv2[i]=eggs_data["Type_name"][klvshka2]
         else:
             klv2[i]="No Type"
-            
-            
     znch2 = list(t_2.values())
-    plt.pie(znch,labels=klv,autopct='%1.1f%%', shadow=True, startangle=90)
-    plt.axis('equal')
-    plt.title("Percentage of Different Types I of Pokemons")
-    plt.plot()
-    fig=plt.gcf()
-    fig.set_size_inches(7,7)
-    plt.show()
-    plt.pie(znch2,labels=klv2,autopct='%1.1f%%', shadow=True, startangle=90)
-    plt.axis('equal')
-    plt.title("Percentage of Different Types II of Pokemons")
-    plt.plot()
-    fig=plt.gcf()
-    fig.set_size_inches(7,7)
-    plt.show()   
+    pie(znch,klv,colors,names[3])
+    pie(znch2,klv2,colors,names[4]) 
                 
 
     
@@ -320,4 +297,7 @@ def reproduction(raz,dva,baza,kol):
             pok_typelist.append(typelist[randnum])
     analyze(pok_typelist,pok_abilities,pok_hidden)
     avrstats(pok_typelist,baza)
-
+# one,two = 200,300
+# kolvo = 500
+# if cheker(one,two,data):
+#     reproduction(one, two, data, kolvo)
