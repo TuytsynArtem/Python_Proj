@@ -10,9 +10,9 @@ import matplotlib.pyplot as plt
 data = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Sheet1',index_col=0)
 eggs_connection = pd.read_excel('C:/Work/Data/eggs_connection.xlsx',sheet_name='Лист1',index_col=0)
 
-one,two=int(input("Введите 1-ое id: ")),int(input("Введите 2-ое id: "))
-kolvo=int(input("Введите количество размножений для анализа вероятностей: "))
-def proverka(a_1,b_1):
+# one,two=int(input("Введите 1-ое id: ")),int(input("Введите 2-ое id: "))
+# kolvo=int(input("Введите количество размножений для анализа вероятностей: "))
+def proverka(t_1,b_1):
     '''
     Parameters
     ----------
@@ -26,7 +26,7 @@ def proverka(a_1,b_1):
     None.
 
     '''
-    if eggs_connection[a_1][b_1]==1:
+    if eggs_connection[t_1][b_1]==1:
         return 1
     return 0
 def cheker(id1,id2,d_b):
@@ -38,14 +38,13 @@ def cheker(id1,id2,d_b):
     id2 : TYPE Integer
         id of pokemon
     d_b : TYPE DataFrame
-        database of pokemons
+        database of pok_typelist
     Returns True
     -------
     False.
 
     '''
-    if(d_b["Egg Group I"][id1]!="-" and d_b["Egg Group II"][id1]!="-"):
-        print(d_b["Egg Group II"][id2])
+    if(d_b["Egg Group I"][id1]!="-" and d_b["Egg Group II"][id1]!="-"):        
 
         if(d_b["Egg Group I"][id2]!="-" and d_b["Egg Group II"][id2]!="-"):
             if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
@@ -75,9 +74,9 @@ def avrstats(listok,b_z):
     Parameters
     ----------
     listok : TYPE Array
-        list of pokemons type
+        list of pok_typelist type
     d_z : TYPE DataFrame
-        database of pokemons
+        database of pok_typelist
     Returns True
     -------
     False.
@@ -86,7 +85,7 @@ def avrstats(listok,b_z):
     stats = [0,0,0,0,0,0]
     avr = 0
     podhodyat = {}
-    for i in range (1,664):
+    for i in range (1,663):
         j=0
         while j<len(listok):
             if b_z["Type I"][i]==listok[j] and b_z["Type II"][i]==listok[j+1]:
@@ -109,20 +108,83 @@ def avrstats(listok,b_z):
     fig.set_figwidth(16)
     plt.title("Average Stats")
     plt.show()
-def analyze(spisisok):
+def analyze(tipes,abilki,pryatki):
     '''
     Parameters
     ----------
-    spisisok : TYPE Array
-        list of pokemons type
+    tipes : TYPE Array
+        list of pok_typelist type
     Returns True
     -------
     False.
 
     '''
+    eggs_data = pd.read_excel('C:/Work/Data/Types.xlsx',sheet_name='Лист1',index_col=0)
+    ability_data = pd.read_excel('C:/Work/Data/Ability.xlsx',sheet_name='Лист1',index_col=0)
     t_1 = {}
     t_2 = {}
-    for i,spis in enumerate(spisisok):
+    for i,abilki in enumerate(abilki):
+        if i%2>0:
+            if t_2.get(abilki) is not None:
+                t_2[abilki]+=1
+            else:
+                t_2[abilki]=1
+        else:
+            if t_1.get(abilki) is not None:
+                t_1[abilki]+=1
+            else:
+                t_1[abilki]=1
+    klv = list(t_1.keys())
+    for i,klvshka in enumerate(klv):
+        klv[i]=ability_data["Ability"][klvshka]
+    znch = list(t_1.values())
+    klv2 = list(t_2.keys())
+    for i,klvshka2 in enumerate(klv2):
+        if  klvshka2!=0:
+            klv2[i]=ability_data["Ability"][klvshka2]
+        else:
+            klv2[i]="No Ability"
+            
+            
+    znch2 = list(t_2.values())
+    plt.pie(znch,labels=klv,autopct='%1.1f%%', shadow=True, startangle=90)
+    plt.axis('equal')
+    plt.title("Percentage of Different Abilities I of Pokemons")
+    plt.plot()
+    fig=plt.gcf()
+    fig.set_size_inches(7,7)
+    plt.show()
+    plt.pie(znch2,labels=klv2,autopct='%1.1f%%', shadow=True, startangle=90)
+    plt.axis('equal')
+    plt.title("Percentage of Different Abilities II of Pokemons")
+    plt.plot()
+    fig=plt.gcf()
+    fig.set_size_inches(7,7)
+    plt.show()                
+    t_1 = {}
+    for i,pryatki in enumerate(pryatki):
+        if t_1.get(pryatki) is not None:
+            t_1[pryatki]+=1
+        else:
+            t_1[pryatki]=1
+    klv = list(t_1.keys())
+    for i,klvshka in enumerate(klv):
+        if  klvshka!=0:
+            klv[i]=ability_data["Ability"][klvshka]
+        else:
+            klv[i]="No t_1 Ability"
+    znch = list(t_1.values())
+    
+    plt.pie(znch,labels=klv,autopct='%1.1f%%', shadow=True, startangle=90)
+    plt.axis('equal')
+    plt.title("Percentage of Different Hidden Ability of Pokemons")
+    plt.plot()
+    fig=plt.gcf()
+    fig.set_size_inches(7,7)
+    plt.show()
+    t_1 = {}
+    t_2 = {}            
+    for i,spis in enumerate(tipes):
         if i%2>0:
             if t_2.get(spis) is not None:
                 t_2[spis]+=1
@@ -133,7 +195,6 @@ def analyze(spisisok):
                 t_1[spis]+=1
             else:
                 t_1[spis]=1
-    eggs_data = pd.read_excel('C:/Work/Data/Types.xlsx',sheet_name='Лист1',index_col=0)
     klv = list(t_1.keys())
     for i,klvshka in enumerate(klv):
         klv[i]=eggs_data["Type_name"][klvshka]
@@ -144,21 +205,28 @@ def analyze(spisisok):
             klv2[i]=eggs_data["Type_name"][klvshka2]
         else:
             klv2[i]="No Type"
+            
+            
     znch2 = list(t_2.values())
     plt.pie(znch,labels=klv,autopct='%1.1f%%', shadow=True, startangle=90)
     plt.axis('equal')
-    plt.title("Percentage of Different Types I of Pokemon")
+    plt.title("Percentage of Different Types I of Pokemons")
     plt.plot()
     fig=plt.gcf()
     fig.set_size_inches(7,7)
     plt.show()
     plt.pie(znch2,labels=klv2,autopct='%1.1f%%', shadow=True, startangle=90)
     plt.axis('equal')
-    plt.title("Percentage of Different Types II of Pokemon")
+    plt.title("Percentage of Different Types II of Pokemons")
     plt.plot()
     fig=plt.gcf()
     fig.set_size_inches(7,7)
-    plt.show()
+    plt.show()   
+                
+
+    
+    
+    
 def reproduction(raz,dva,baza,kol):
     '''
     Parameters
@@ -168,7 +236,7 @@ def reproduction(raz,dva,baza,kol):
     dva : TYPE Integer
         id of pokemon
     baza : TYPE DataFrame
-        database of pokemons
+        database of pok_typelist
     kol : TYPE Integer
     ammount of cicle
     Returns True
@@ -176,9 +244,52 @@ def reproduction(raz,dva,baza,kol):
     False.
 
     '''
+    hidden = []
+    pok_hidden = []
+    abilities_pok = []
+    pok_abilities = []
     typelist = []
-    pokemons = []
+    pok_typelist = []
     flag = True
+    
+    hidden.append(baza["Hidden Ability"][raz])
+    if baza["Hidden Ability"][raz]!=baza["Hidden Ability"][dva]:
+        hidden.append(baza["Hidden Ability"][dva])
+            
+        
+    abilities_pok.append(baza["Ability I"][raz])
+    if baza["Ability II"][raz]!=0:
+        abilities_pok.append(baza["Ability II"][raz])
+    if baza["Ability I"][dva]!=0:
+        for i in abilities_pok:
+            if i == baza["Ability I"][dva]:
+                flag = False
+        if flag:
+            abilities_pok.append(baza["Ability I"][dva])
+    flag = True
+    if baza["Ability II"][dva]!=0:
+        for i in abilities_pok:
+            if i == baza["Ability II"][dva]:
+                flag = False
+        if flag:
+            abilities_pok.append(baza["Ability II"][dva])
+    for i in range(kol):
+        randnum = random.randint(0,len(abilities_pok)-1)
+        pok_abilities.append(abilities_pok[randnum])
+        promejutok = randnum
+        while randnum == promejutok:
+            randnum = random.randint(0,len(abilities_pok))
+        if randnum == 0:
+            pok_abilities.append(abilities_pok[0])
+        elif randnum == len(abilities_pok):
+            pok_abilities.append(0)
+        else:
+            pok_abilities.append(abilities_pok[randnum])
+        randnum = random.randint(0,len(hidden)-1)
+        pok_hidden.append(hidden[randnum])
+        
+        
+    
     typelist.append(baza["Type I"][raz])
     if baza["Type II"][raz]!=0:
         typelist.append(baza["Type II"][raz])
@@ -196,21 +307,17 @@ def reproduction(raz,dva,baza,kol):
         if flag:
             typelist.append(baza["Type II"][dva])
     for i in range(kol):
-        r_r = random.randint(0,len(typelist)-1)
-        pokemons.append(typelist[r_r])
-        promejutok = r_r
-        while r_r == promejutok:
-            r_r = random.randint(0,len(typelist))
-        if r_r == 0:
-            pokemons.append(typelist[0])
-        elif r_r == len(typelist):
-            pokemons.append(0)
+        randnum = random.randint(0,len(typelist)-1)
+        pok_typelist.append(typelist[randnum])
+        promejutok = randnum
+        while randnum == promejutok:
+            randnum = random.randint(0,len(typelist))
+        if randnum == 0:
+            pok_typelist.append(typelist[0])
+        elif randnum == len(typelist):
+            pok_typelist.append(0)
         else:
-            pokemons.append(typelist[r_r])
-    analyze(pokemons)
-    avrstats(pokemons,baza)
-if cheker(one,two,data):
-    print("размножение возможно:")
-    reproduction(one,two,data,kolvo)
-else:
-    print("размножение невозможно:")
+            pok_typelist.append(typelist[randnum])
+    analyze(pok_typelist,pok_abilities,pok_hidden)
+    avrstats(pok_typelist,baza)
+
