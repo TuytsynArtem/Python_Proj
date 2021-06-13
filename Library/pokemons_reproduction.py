@@ -15,20 +15,31 @@ max_id = max(data.index)
 
 # one,two=int(input("Введите 1-ое id: ")),int(input("Введите 2-ое id: "))
 # kolvo=int(input("Введите количество размножений для анализа вероятностей: "))
-# def raspredelenie(typelist):
-#     if len(typelist)==2:
-#         for i in range(0,max_id):
-#             for j in typelist:
-#                 if j == data["Type I"][i] or j == data["Type II"][i]:
-#                     fig = plt.figure(figsize=(340,170))
-#                     fig.scatter(x = data['Atk'][i], y = data['Def'][i])
-#         plt.xlabel("Attack")
-#         plt.ylabel("Defense")        
-#         plt.show()
-#     if len(typelist)==3:
-#         print(0)
-#     if len(typelist)==4:
-#         print(0)
+def raspredelenie(typelist):
+    listochek = pd.DataFrame(columns = ['HP','Atk','Def','SpA','SpD','Spe'])
+    
+    for i in range(0,max_id):
+        for j in typelist:
+            if j == data["Type I"][i] or j==data["Type II"][i]:                    
+                 stats = pd.Series([data["Hp"][i],data["Atk"][i],data["Def"][i],data["SpA"][i],data["SpD"][i],data["Spe"][i]], 
+                    index=["HP","Atk","Def","SpA","SpD","Spe"])
+                 print(stats)
+            # elif j==data["Type II"][i]:
+            #      pokemon2 = pd.Series([data["Hp"][i],data["Atk"][i],data["Def"][i],data["SpA"][i],data["SpD"][i],data["Spe"][i]], 
+            #         index=["HP","Atk","Def","SpA","SpD","Spe"])
+                    # print(2222," AAA",len(typelist))
+            print(listochek)
+            listochek.append(stats,ignore_index=True)
+            
+            
+
+        
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.scatter(x = listochek['Atk'], y = listochek['Def'])            
+        plt.xlabel("Attack")
+        plt.ylabel("Defense")        
+        plt.show()
+
         
     
     
@@ -46,7 +57,6 @@ def proverka(t_1,b_1):
     None.
 
     '''
-
     if eggs_connection[t_1][b_1]==1:
         return 1
     return 0
@@ -65,31 +75,35 @@ def cheker(id1,id2,d_b):
     False.
 
     '''
-    print(d_b["Egg Group I"][id1])
-    if(d_b["Egg Group I"][id1]!="0" and d_b["Egg Group II"][id1]!="0"):        
+    if(d_b["Egg Group I"][id1]!=0 and d_b["Egg Group II"][id1]!=0):        
 
-        if(d_b["Egg Group I"][id2]!="0" and d_b["Egg Group II"][id2]!="0"):
+        if(d_b["Egg Group I"][id2]!=0 and d_b["Egg Group II"][id2]!=0):
             if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
                  +proverka(d_b["Egg Group I"][id1],d_b["Egg Group II"][id2])
                  +proverka(d_b["Egg Group II"][id1],d_b["Egg Group I"][id2])
                  +proverka(d_b["Egg Group II"][id1],d_b["Egg Group II"][id2]))>0):
+
                 return True
 
-        elif(d_b["Egg Group I"][id2]!="0" and d_b["Egg Group II"][id2]=="0"):
+        elif(d_b["Egg Group I"][id2]!=0 and d_b["Egg Group II"][id2]==0):
             if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
                  +proverka(d_b["Egg Group II"][id1],d_b["Egg Group I"][id2]))>0):
+
                 return True
 
-    elif(d_b["Egg Group I"][id1]!="0" and d_b["Egg Group II"][id1]=="0"):
-
-        if(d_b["Egg Group I"][id2]!="0" and d_b["Egg Group II"][id2]!="0"):
+    elif(d_b["Egg Group I"][id1]!=0 and d_b["Egg Group II"][id1]==0):
+        print("HI03")
+        if(d_b["Egg Group I"][id2]!=0 and d_b["Egg Group II"][id2]!=0):
             if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
                  +proverka(d_b["Egg Group I"][id1],d_b["Egg Group II"][id2]))>0):
+
                 return True
 
-        elif(d_b["Egg Group I"][id2]!="0" and d_b["Egg Group II"][id2]=="0"):
+        elif(d_b["Egg Group I"][id2]!=0 and d_b["Egg Group II"][id2]==0):
             if (proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2]))>0:
+
                 return True
+
     return False
 def avrstats(listok,b_z):
     '''
@@ -318,6 +332,7 @@ def reproduction(raz,dva,baza,kol):
             pok_typelist.append(typelist[randnum])
     analyze(pok_typelist,pok_abilities,pok_hidden)
     avrstats(pok_typelist,baza)
+    raspredelenie(typelist)
 # one,two = 200,300
 # kolvo = 500
 # if cheker(one,two,data):

@@ -20,7 +20,6 @@ def new_pokemon(name,HP,Atk,Def,SpA,SpD,Spe,TypeI,TypeII,AbilityI,AbilityII,Hidd
     
     dataname=dataname.append(pokemon3,ignore_index=True)
     
-    
     data=data.append(pokemon2,ignore_index=True)
     dataname.to_excel("C:/Work/Data/Pokname.xlsx")
     data.to_excel("C:/Work/Data/pdx.xlsx")
@@ -32,6 +31,4 @@ def delete_pokemon(name):
     # data = data.drop(data[data.score == name].index)
     # data = data.drop(index = [a])
     
-# new_pokemon("Ilya",60,60,60,60,60,60,1,2,1,2,3,1,2)
-# new_pokemon("Uraa",22,22,22,22,22,22,1,2,1,2,3,1,2)
-delete_pokemon("Ilya")
+
