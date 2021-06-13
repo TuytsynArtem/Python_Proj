@@ -10,9 +10,28 @@ import matplotlib.pyplot as plt
 from plot import save,pie
 data = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Sheet1',index_col=0)
 eggs_connection = pd.read_excel('C:/Work/Data/eggs_connection.xlsx',sheet_name='Лист1',index_col=0)
+max_id = max(data.index)
+
 
 # one,two=int(input("Введите 1-ое id: ")),int(input("Введите 2-ое id: "))
 # kolvo=int(input("Введите количество размножений для анализа вероятностей: "))
+# def raspredelenie(typelist):
+#     if len(typelist)==2:
+#         for i in range(0,max_id):
+#             for j in typelist:
+#                 if j == data["Type I"][i] or j == data["Type II"][i]:
+#                     fig = plt.figure(figsize=(340,170))
+#                     fig.scatter(x = data['Atk'][i], y = data['Def'][i])
+#         plt.xlabel("Attack")
+#         plt.ylabel("Defense")        
+#         plt.show()
+#     if len(typelist)==3:
+#         print(0)
+#     if len(typelist)==4:
+#         print(0)
+        
+    
+    
 def proverka(t_1,b_1):
     '''
     Parameters
@@ -27,6 +46,7 @@ def proverka(t_1,b_1):
     None.
 
     '''
+
     if eggs_connection[t_1][b_1]==1:
         return 1
     return 0
@@ -45,28 +65,29 @@ def cheker(id1,id2,d_b):
     False.
 
     '''
-    if(d_b["Egg Group I"][id1]!="-" and d_b["Egg Group II"][id1]!="-"):        
+    print(d_b["Egg Group I"][id1])
+    if(d_b["Egg Group I"][id1]!="0" and d_b["Egg Group II"][id1]!="0"):        
 
-        if(d_b["Egg Group I"][id2]!="-" and d_b["Egg Group II"][id2]!="-"):
+        if(d_b["Egg Group I"][id2]!="0" and d_b["Egg Group II"][id2]!="0"):
             if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
                  +proverka(d_b["Egg Group I"][id1],d_b["Egg Group II"][id2])
                  +proverka(d_b["Egg Group II"][id1],d_b["Egg Group I"][id2])
                  +proverka(d_b["Egg Group II"][id1],d_b["Egg Group II"][id2]))>0):
                 return True
 
-        elif(d_b["Egg Group I"][id2]!="-" and d_b["Egg Group II"][id2]=="-"):
+        elif(d_b["Egg Group I"][id2]!="0" and d_b["Egg Group II"][id2]=="0"):
             if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
                  +proverka(d_b["Egg Group II"][id1],d_b["Egg Group I"][id2]))>0):
                 return True
 
-    elif(d_b["Egg Group I"][id1]!="-" and d_b["Egg Group II"][id1]=="-"):
+    elif(d_b["Egg Group I"][id1]!="0" and d_b["Egg Group II"][id1]=="0"):
 
-        if(d_b["Egg Group I"][id2]!="-" and d_b["Egg Group II"][id2]!="-"):
+        if(d_b["Egg Group I"][id2]!="0" and d_b["Egg Group II"][id2]!="0"):
             if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
                  +proverka(d_b["Egg Group I"][id1],d_b["Egg Group II"][id2]))>0):
                 return True
 
-        elif(d_b["Egg Group I"][id2]!="-" and d_b["Egg Group II"][id2]=="-"):
+        elif(d_b["Egg Group I"][id2]!="0" and d_b["Egg Group II"][id2]=="0"):
             if (proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2]))>0:
                 return True
     return False
@@ -86,7 +107,7 @@ def avrstats(listok,b_z):
     stats = [0,0,0,0,0,0]
     avr = 0
     podhodyat = {}
-    for i in range (1,663):
+    for i in range (0,max_id):
         j=0
         while j<len(listok):
             if b_z["Type I"][i]==listok[j] and b_z["Type II"][i]==listok[j+1]:

@@ -4,18 +4,24 @@ Created on Tue May  4 19:34:32 2021
 
 @author: User
 """
+
 import tkinter as tki
 import tkinter.ttk as ttk
 import pandas as pd
+from playsound import playsound
+
 from pokemons_reproduction import reproduction,cheker
 
 
-db_id = pd.read_excel('C:/Work/Data/Pdx.xlsx',sheet_name='Sheet1',index_col=0)
+
+
+db_id = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Sheet1',index_col=0)
 id_list = list(db_id.index)
+# print(id_list)
 
 
-db_names = pd.read_excel('C:/Work/Data/Pokname.xlsx',sheet_name='Лист1',index_col=0)
-names_list = list(db_names['Pokemon'])
+db_names = pd.read_excel('C:/Work/Data/pokname.xlsx',sheet_name='Sheet1',index_col=0)
+names_list = list(db_names['Name'])
 
 
 def mk_choise():
@@ -42,16 +48,27 @@ def clck():
     id_1 = id_1.split('.')[0]
     id_2 = str(cmb_2.get())
     id_2 = id_2.split('.')[0]
+    
     # print(id_1,"|",id_2,"|",int(txt.get()))
-    if cheker(int(id_1),int(id_2),db_id):
-        print("размножение возможно:")
-        reproduction(int(id_1),int( id_2),db_id,int(txt.get()))
-    else:
-        print("размножение невозможно:")
+    try:
+        ammount = int(txt.get())
+        
+            
+        if cheker(int(id_1),int(id_2),db_id):
+            print("размножение возможно:")
+            playsound('C:\Work\Data\pika.mp3')
+            reproduction(int(id_1),int( id_2),db_id,ammount)
+        else:
+            print("размножение невозможно:")
+    except:
+        print("Введите количество скрещиваний")
+        
+    
+
 win0= tki.Tk()
 win0.title('Pokemons')
 
-win0.geometry('600x250')
+win0.geometry('600x500')
 
 lbl_1 = tki.Label(text = 'Choose the first parent', font = ('Time', 10, 'italic'))
 lbl_1.grid(column = 0, row = 0)
@@ -82,4 +99,6 @@ txt.grid(row = 3)
 btn = tki.Button(win0, text = 'Выполнить скрещивания!', font = ('Arial', 12), command = clck)
 btn.grid(column = 2, row = 4)
 
+
+# playsound('C:\Work\Data\pika.mp3')
 win0.mainloop()
