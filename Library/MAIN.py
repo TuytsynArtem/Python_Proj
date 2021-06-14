@@ -12,7 +12,8 @@ from playsound import playsound
 
 from pokemons_reproduction import reproduction,cheker
 
-
+import os 
+os.system("C:\Work\Library\interface.py")
 
 
 db_id = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Sheet1',index_col=0)
@@ -23,7 +24,7 @@ id_list = list(db_id.index)
 db_names = pd.read_excel('C:/Work/Data/pokname.xlsx',sheet_name='Sheet1',index_col=0)
 names_list = list(db_names['Name'])
 
-2
+
 def mk_choise():
     '''
     Parameters
