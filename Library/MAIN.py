@@ -23,7 +23,7 @@ id_list = list(db_id.index)
 db_names = pd.read_excel('C:/Work/Data/pokname.xlsx',sheet_name='Sheet1',index_col=0)
 names_list = list(db_names['Name'])
 
-
+2
 def mk_choise():
     '''
     Parameters
@@ -50,18 +50,18 @@ def clck():
     id_2 = id_2.split('.')[0]
     
     # print(id_1,"|",id_2,"|",int(txt.get()))
-    try:
-        ammount = int(txt.get())
+    # try:
+    ammount = int(txt.get())
+    
         
-            
-        if cheker(int(id_1),int(id_2),db_id):
-            print("размножение возможно:")
-            playsound('C:\Work\Data\pika.mp3')
-            reproduction(int(id_1),int( id_2),db_id,ammount)
-        else:
-            print("размножение невозможно:")
-    except:
-        print("Введите количество скрещиваний")
+    if cheker(int(id_1),int(id_2),db_id):
+        print("размножение возможно:")
+        playsound('C:\Work\Data\pika.mp3')
+        reproduction(int(id_1),int( id_2),db_id,ammount)
+    else:
+        print("размножение невозможно:")
+    # except:
+    #     print("Введите количество скрещиваний")
         
     
 

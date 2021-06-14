@@ -16,30 +16,28 @@ max_id = max(data.index)
 # one,two=int(input("Введите 1-ое id: ")),int(input("Введите 2-ое id: "))
 # kolvo=int(input("Введите количество размножений для анализа вероятностей: "))
 def raspredelenie(typelist):
-    listochek = pd.DataFrame(columns = ['HP','Atk','Def','SpA','SpD','Spe'])
+    print(0)
+    listochek = pd.read_excel('C:/Work/Data/pdx.test.xlsx',sheet_name='Sheet1',index_col=0)
     
-    for i in range(0,max_id):
+    print(0)
+    for i in range(0,max_id+1):
         for j in typelist:
-            if j == data["Type I"][i] or j==data["Type II"][i]:                    
-                 stats = pd.Series([data["Hp"][i],data["Atk"][i],data["Def"][i],data["SpA"][i],data["SpD"][i],data["Spe"][i]], 
-                    index=["HP","Atk","Def","SpA","SpD","Spe"])
-                 print(stats)
-            # elif j==data["Type II"][i]:
-            #      pokemon2 = pd.Series([data["Hp"][i],data["Atk"][i],data["Def"][i],data["SpA"][i],data["SpD"][i],data["Spe"][i]], 
-            #         index=["HP","Atk","Def","SpA","SpD","Spe"])
-                    # print(2222," AAA",len(typelist))
-            print(listochek)
-            listochek.append(stats,ignore_index=True)
-            
-            
-
-        
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.scatter(x = listochek['Atk'], y = listochek['Def'])            
-        plt.xlabel("Attack")
-        plt.ylabel("Defense")        
-        plt.show()
-
+            if j == data["Type I"][i] or j==data["Type II"][i]:
+                stats = pd.Series([data["HP"][i],data["Atk"][i],data["Def"][i],data["SpA"][i],data["SpD"][i],data["Spe"][i]],
+                index=["HP","Atk","Def","SpA","SpD","Spe"])
+                print(stats)
+                listochek = listochek.append(stats,ignore_index=True)
+                print(listochek)
+    fig, ax = plt.subplots(figsize=(10, 10))
+    ax.scatter(x = listochek['Atk'], y = listochek['Def'])            
+    plt.xlabel("Attack")
+    plt.ylabel("Defense")        
+    plt.show()
+    fig, ax = plt.subplots(figsize=(10, 10))
+    ax.scatter(x = listochek['SpA'], y = listochek['SpD'])            
+    plt.xlabel("SpA")
+    plt.ylabel("SpD") 
+    plt.show()
         
     
     
@@ -121,7 +119,7 @@ def avrstats(listok,b_z):
     stats = [0,0,0,0,0,0]
     avr = 0
     podhodyat = {}
-    for i in range (0,max_id):
+    for i in range (0,max_id+1):
         j=0
         while j<len(listok):
             if b_z["Type I"][i]==listok[j] and b_z["Type II"][i]==listok[j+1]:
