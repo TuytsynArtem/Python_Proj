@@ -6,6 +6,9 @@ import os
 import tkinter as tki
 import tkinter.ttk as ttk
 
+from pokemons_reproduction import boxplot,raspredelenie,reproduction
+
+
 db_1 = pd.read_excel('C:\Work\Data\Pokname.xlsx',sheet_name='Sheet1', index_col=(0))
 db_3 = pd.read_excel('C:\Work\Data\Pdx.xlsx',sheet_name='Sheet1', index_col=(0))
 
@@ -16,22 +19,22 @@ win0.geometry('800x500+300+200')
 f_top = tki.LabelFrame(win0, text = 'визуализация')
 f_top.place(x = 10, y = 10,  width = 340, height = 180)
 
+btn = tki.Button(win0, text = 'Размножить', font = ('Times', 12))
+btn.place(x = 650, y = 120 )
 
-lbl_2 = tki.Label(win0, text = 'База данных', font = ('Times', 12))
+
+lbl_2 = tki.Label(win0, text = 'База данных', font = ('Times', 12))#, command = boxplot)
 lbl_2.place(x = 15, y = 200 )
 i =0
 var_3 =[]
-# создание кнопки
-btn = tki.Button(win0, text = 'Выполнить', font = ('Times', 12))#, command = clck)
-btn.place(x = 650, y = 120 )
-# создание таблицы
+
 
 tree = ttk.Treeview(win0)
 tree['show'] = 'headings'
 col = ('Название покемона', 'Данные')
 for i in db_3.columns[1:]:
     col = col + (str(i),)#.split(' ')[0]),)
-    print(col)
+    # print(col)
 tree['columns']=col
 tree.column('Название покемона', width= 150)
 tree.heading('Название покемона', text = 'Название покемона')
@@ -43,18 +46,18 @@ for i in col[2:]:
 
 
 date_list = [list(k) for k in list(db_3.values)]
-print(len(date_list))
-print(len(list(db_1.values)))
+# print(len(date_list))
+# print(len(list(db_1.values)))
 for i in range(len(list(db_1.values))):
     date_list[i].insert(0,db_1.values[i][0])
     
-lbl_1 = tki.Label(text = 'Выберите первого родителя', font = ('Times', 12))
+lbl_1 = tki.Label(text = 'Первый родитель', font = ('Times', 12))
 lbl_1.place(x = 350, y = 10)
 
-lbl_3 = tki.Label(text = 'Выберите второго родителя', font = ('Times', 12))
+lbl_3 = tki.Label(text = 'Второй родитель', font = ('Times', 12))
 lbl_3.place(x = 550, y = 10)
 
-lbl_4 = tki.Label(text = 'Выберите количество размножений', font = ('Times', 12))
+lbl_4 = tki.Label(text = '     Количество размножений', font = ('Times', 12))
 lbl_4.place(x = 400, y = 80)
 
 list_ = [i[0] for i in list(db_1.values)]
@@ -76,6 +79,13 @@ txt.place(x=450, y= 120 )
     
 date_list.reverse()
 tree.place(x = 15 , y = 225, width=750, height=240)
+
+# создание кнопки
+# print(db_1.loc[db_1["Name"]==cmb_1.get()].index.values[0])
+# print(db_1.loc(db_1["Name"]==cmb_1.get()).index.value[0],db_1.loc(db_1["Name"]==cmb_2.get()).index.value[0],txt.get())
+btn = tki.Button(win0, text = 'Размножить', font = ('Times', 12),command = reproduction(db_1.loc[db_1["Name"]==cmb_1.get()].index.values[0],db_1.loc[db_1["Name"]==cmb_2.get()].index.values[0],db_3,int(txt.get()),win0))
+btn.place(x = 650, y = 120 )
+# создание таблицы
 
 for i in date_list:
     tree.insert('', 0, values = tuple(i))
