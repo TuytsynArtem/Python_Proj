@@ -38,7 +38,10 @@ def raspredelenie(typelist):
     plt.xlabel("SpA")
     plt.ylabel("SpD") 
     plt.show()
-        
+    
+def boxplot():
+    data.boxplot(column='Spe', by='Type I')
+    plt.show()
     
     
 def proverka(t_1,b_1):
@@ -331,6 +334,7 @@ def reproduction(raz,dva,baza,kol):
     analyze(pok_typelist,pok_abilities,pok_hidden)
     avrstats(pok_typelist,baza)
     raspredelenie(typelist)
+    boxplot()
 # one,two = 200,300
 # kolvo = 500
 # if cheker(one,two,data):
