@@ -5,9 +5,28 @@ import matplotlib.gridspec as gridspec
 import os
 import tkinter as tki
 import tkinter.ttk as ttk
-
+from playsound import playsound
 from pokemons_reproduction import boxplot,raspredelenie,reproduction
+from pokemons_reproduction import reproduction,cheker
 
+def clck():
+    '''
+    Parameters
+    ----------
+    -------
+    None.
+    '''
+    try:
+        ammount = int(txt.get())
+        print(ammount)
+        if cheker(db_1.loc[db_1["Name"]==cmb_1.get()].index.values[0],db_1.loc[db_1["Name"]==cmb_2.get()].index.values[0],db_3):
+            print("размножение возможно:")
+            playsound('C:\Work\Data\pika.mp3')
+            reproduction(db_1.loc[db_1["Name"]==cmb_1.get()].index.values[0],db_1.loc[db_1["Name"]==cmb_2.get()].index.values[0],db_3,ammount,win0)
+        else:
+            print("размножение невозможно:")
+    except:
+        print("Введите количество скрещиваний")
 
 db_1 = pd.read_excel('C:\Work\Data\Pokname.xlsx',sheet_name='Sheet1', index_col=(0))
 db_3 = pd.read_excel('C:\Work\Data\Pdx.xlsx',sheet_name='Sheet1', index_col=(0))
@@ -83,7 +102,7 @@ tree.place(x = 15 , y = 225, width=750, height=240)
 # создание кнопки
 # print(db_1.loc[db_1["Name"]==cmb_1.get()].index.values[0])
 # print(db_1.loc(db_1["Name"]==cmb_1.get()).index.value[0],db_1.loc(db_1["Name"]==cmb_2.get()).index.value[0],txt.get())
-btn = tki.Button(win0, text = 'Размножить', font = ('Times', 12),command = reproduction(db_1.loc[db_1["Name"]==cmb_1.get()].index.values[0],db_1.loc[db_1["Name"]==cmb_2.get()].index.values[0],db_3,int(txt.get()),win0))
+btn = tki.Button(win0, text = 'Размножить', font = ('Times', 12),command = clck())
 btn.place(x = 650, y = 120 )
 # создание таблицы
 
