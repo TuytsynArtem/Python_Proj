@@ -5,12 +5,26 @@ Created on Tue May  4 19:34:32 2021
 @author: User
 """
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from playsound import playsound
 
 def save(path):
+    '''
+    Parameters
+    ----------
+    path : TYPE string
+            file's path
+    -------
+    '''
     plt.savefig(path)
 def pie(value,ammount,color,name):
+    '''
+    Parameters
+    ----------
+    value : TYPE int
+    ammount : TYPE int
+    color : TYPE string
+    name : TYPE string
+    -------
+    '''
     plt.close()
     plt.pie(value,labels=ammount,colors=color,autopct='%1.1f%%', shadow=True, startangle=90)
     plt.axis('equal')
@@ -22,4 +36,3 @@ def pie(value,ammount,color,name):
     save("C:/Work/Graphics/"+str(name))
     plt.close()
     return fig
-    # plt.show()

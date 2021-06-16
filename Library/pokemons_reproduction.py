@@ -7,10 +7,9 @@ Created on Tue May  4 19:34:32 2021
 import random
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib as mat
 from plot import save,pie
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from playsound import playsound
+
 
 data = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Sheet1',index_col=0)
 eggs_connection = pd.read_excel('C:/Work/Data/eggs_connection.xlsx',sheet_name='Лист1',index_col=0)
@@ -23,11 +22,20 @@ max_id = max(data.index)
 
 
 def graphs(fig,win):
+    '''
+    Parameters
+    ----------
+    fig : TYPE list
+        list of figures
+    win : TYPE Tk
+        window
+    -------
+    '''
     canvas = FigureCanvasTkAgg(fig, win)
     canvas.draw()
     canvas.get_tk_widget().place(x = 10, y = 10, width = 340, height = 250)
 
-def reproduction(raz,dva,baza,kol,win):
+def reproduction(raz,dva,baza,kol):
     '''
     Parameters
     ----------
@@ -51,11 +59,9 @@ def reproduction(raz,dva,baza,kol,win):
     typelist = []
     pok_typelist = []
     flag = True
-    
     hidden.append(baza["Hidden Ability"][raz])
     if baza["Hidden Ability"][raz]!=baza["Hidden Ability"][dva]:
         hidden.append(baza["Hidden Ability"][dva])
-        
     abilities_pok.append(baza["Ability I"][raz])
     if baza["Ability II"][raz]!=0:
         abilities_pok.append(baza["Ability II"][raz])
@@ -86,7 +92,6 @@ def reproduction(raz,dva,baza,kol,win):
             pok_abilities.append(abilities_pok[randnum])
         randnum = random.randint(0,len(hidden)-1)
         pok_hidden.append(hidden[randnum])
-        
     typelist.append(baza["Type I"][raz])
     if baza["Type II"][raz]!=0:
         typelist.append(baza["Type II"][raz])
@@ -114,11 +119,12 @@ def reproduction(raz,dva,baza,kol,win):
         elif randnum == len(typelist):
             pok_typelist.append(0)
         else:
-            pok_typelist.append(typelist[randnum])
+            pok_typelist.append(typelist[randnum]) 
+    boxplot()
+    return (analyze(pok_typelist,pok_abilities,pok_hidden)+
+            avrstats(pok_typelist,baza)+raspredelenie(typelist))
 
-    return analyze(pok_typelist,pok_abilities,pok_hidden,win)+    avrstats(pok_typelist,baza,win)+    raspredelenie(typelist,win) 
-    # boxplot(win)
-def analyze(tipes,abilki,pryatki,win):
+def analyze(tipes,abilki,pryatki):
     '''
     Parameters
     ----------
@@ -130,15 +136,10 @@ def analyze(tipes,abilki,pryatki,win):
 
     '''
     array = []
-    array1 = []
-    array2 = []
-    array3 = []
-    array4 = []
     names = ["Ability I","Ability II","Hidden Ability","Type I","Type II"]
     colors = list('rbygkm')
     eggs_data = pd.read_excel('C:/Work/Data/Types.xlsx',sheet_name='Лист1',index_col=0)
     ability_data = pd.read_excel('C:/Work/Data/Ability.xlsx',sheet_name='Лист1',index_col=0)
-    print(abilki)
     t_1 = {}
     t_2 = {}
     for i,abilki in enumerate(abilki):
@@ -162,15 +163,13 @@ def analyze(tipes,abilki,pryatki,win):
             klv2[i]=ability_data["Ability"][klvshka2]
         else:
             klv2[i]="No Ability"
-            
-   
     znch2 = list(t_2.values())
+
     array.append(pie(znch,klv,colors,names[0]))
-    array1.append(pie(znch2,klv2,colors,names[1]))
-    
-    
-    t_1 = {}
-    t_2 = {}
+    array.append(pie(znch2,klv2,colors,names[1]))
+
+    t_1.clear()
+    t_2.clear()
     for i,pryatki in enumerate(pryatki):
         if t_1.get(pryatki) is not None:
             t_1[pryatki]+=1
@@ -183,14 +182,11 @@ def analyze(tipes,abilki,pryatki,win):
         else:
             klv[i]="No Hidden Ability"
     znch = list(t_1.values())
-    
-    array2.append(pie(znch,klv,colors,names[2]))
-    
-    
-    
-    # plt.show()
-    t_1 = {}
-    t_2 = {}            
+
+    array.append(pie(znch,klv,colors,names[2]))
+
+    t_1.clear()
+    t_2.clear()
     for i,spis in enumerate(tipes):
         if i%2>0:
             if t_2.get(spis) is not None:
@@ -213,52 +209,57 @@ def analyze(tipes,abilki,pryatki,win):
         else:
             klv2[i]="No Type"
     znch2 = list(t_2.values())
-    array3.append(pie(znch,klv,colors,names[3]))
-    array4.append(pie(znch2,klv2,colors,names[4]))
+    array.append(pie(znch,klv,colors,names[3]))
+    array.append(pie(znch2,klv2,colors,names[4]))
 
-    return array + array1 + array2 + array3 + array4
-def raspredelenie(typelist,win):
+    return array
+def raspredelenie(typelist):
+    '''
+    Parameters
+    ----------
+    typelist : TYPE Array
+        list of type
+    Returns True
+    -------
+    False.
+
+    '''
     array = []
-    array1 = []
-    array2 = []
+
     plt.close()
-   
     listochek = pd.read_excel('C:/Work/Data/pdx.test.xlsx',sheet_name='Sheet1',index_col=0)
-    
-   
     for i in range(0,max_id+1):
         for j in typelist:
             if j == data["Type I"][i] or j==data["Type II"][i]:
-                stats = pd.Series([data["HP"][i],data["Atk"][i],data["Def"][i],data["SpA"][i],data["SpD"][i],data["Spe"][i]],
+                stats = pd.Series([data["HP"][i],data["Atk"][i],data["Def"][i],
+                                   data["SpA"][i],data["SpD"][i],data["Spe"][i]],
                 index=["HP","Atk","Def","SpA","SpD","Spe"])
-                
                 listochek = listochek.append(stats,ignore_index=True)
-                
-    fig, ax = plt.subplots(figsize=(10, 10))
-    ax.scatter(x = listochek['Atk'], y = listochek['Def'])            
+    fig, axi = plt.subplots(figsize=(10, 10))
+    axi.scatter(x = listochek['Atk'], y = listochek['Def'])
     plt.xlabel("Attack")
-    plt.ylabel("Defense")        
+    plt.ylabel("Defense")
     plt.rc('xtick', labelsize=10)
     array.append(fig)
     # plt.show()
     plt.close()
-    fig, ax = plt.subplots(figsize=(10, 10))
-    ax.scatter(x = listochek['SpA'], y = listochek['SpD'])            
+    fig, axi = plt.subplots(figsize=(10, 10))
+    axi.scatter(x = listochek['SpA'], y = listochek['SpD'])
     plt.xlabel("SpA")
     plt.ylabel("SpD")
     plt.rc('xtick', labelsize=10)
-    array1.append(fig)
+    array.append(fig)
     plt.close()
-    fig, ax = plt.subplots(figsize=(10, 10))
-    ax.scatter(x = listochek['HP'], y = listochek['Spe'])            
+    fig, axi = plt.subplots(figsize=(10, 10))
+    axi.scatter(x = listochek['HP'], y = listochek['Spe'])
     plt.xlabel("HP")
     plt.ylabel("Spe")
     plt.rc('xtick', labelsize=10)
-    array2.append(fig)
+    array.append(fig)
     plt.close()
     # plt.show()
-    return array + array1 + array2
-def avrstats(listok,b_z,win):
+    return array
+def avrstats(listok,b_z):
     '''
     Parameters
     ----------
@@ -306,17 +307,19 @@ def avrstats(listok,b_z,win):
     plt.close()
     return array
 
-
 def boxplot():
+    '''
+    Parameters
+    ----------
+    -------
+    None.
+    '''
     array=[]
     plt.close()
     fig = data.boxplot(column=["HP","Atk","Def","SpA","SpD","Spe"])#, by='Type I')
     array.append(fig)
-    plt.close()
-    return array
+    plt.show()
 
-    
-    
 def proverka(t_1,b_1):
     '''
     Parameters
@@ -349,7 +352,7 @@ def cheker(id1,id2,d_b):
     False.
 
     '''
-    if(d_b["Egg Group I"][id1]!=0 and d_b["Egg Group II"][id1]!=0):        
+    if(d_b["Egg Group I"][id1]!=0 and d_b["Egg Group II"][id1]!=0):
 
         if(d_b["Egg Group I"][id2]!=0 and d_b["Egg Group II"][id2]!=0):
             if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
@@ -366,7 +369,6 @@ def cheker(id1,id2,d_b):
                 return True
 
     elif(d_b["Egg Group I"][id1]!=0 and d_b["Egg Group II"][id1]==0):
-        
         if(d_b["Egg Group I"][id2]!=0 and d_b["Egg Group II"][id2]!=0):
             if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
                  +proverka(d_b["Egg Group I"][id1],d_b["Egg Group II"][id2]))>0):
