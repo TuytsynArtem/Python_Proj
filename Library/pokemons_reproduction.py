@@ -25,9 +25,9 @@ max_id = max(data.index)
 def graphs(fig,win):
     canvas = FigureCanvasTkAgg(fig, win)
     canvas.draw()
-    canvas.get_tk_widget().place(x = 10, y = 10, width = 340, height = 180)
+    canvas.get_tk_widget().place(x = 10, y = 10, width = 340, height = 250)
 
-def reproduction(raz,dva,baza,kol,win,massive):
+def reproduction(raz,dva,baza,kol,win):
     '''
     Parameters
     ----------
@@ -51,7 +51,7 @@ def reproduction(raz,dva,baza,kol,win,massive):
     typelist = []
     pok_typelist = []
     flag = True
-    print("HELL")
+    
     hidden.append(baza["Hidden Ability"][raz])
     if baza["Hidden Ability"][raz]!=baza["Hidden Ability"][dva]:
         hidden.append(baza["Hidden Ability"][dva])
@@ -115,13 +115,10 @@ def reproduction(raz,dva,baza,kol,win,massive):
             pok_typelist.append(0)
         else:
             pok_typelist.append(typelist[randnum])
-    print("HELL")        
-    analyze(pok_typelist,pok_abilities,pok_hidden,win,massive)
-    avrstats(pok_typelist,baza,win,massive)
-    raspredelenie(typelist,win,massive)
-    return massive
+
+    return analyze(pok_typelist,pok_abilities,pok_hidden,win)+    avrstats(pok_typelist,baza,win)+    raspredelenie(typelist,win) 
     # boxplot(win)
-def analyze(tipes,abilki,pryatki,win,massive):
+def analyze(tipes,abilki,pryatki,win):
     '''
     Parameters
     ----------
@@ -132,10 +129,16 @@ def analyze(tipes,abilki,pryatki,win,massive):
     False.
 
     '''
+    array = []
+    array1 = []
+    array2 = []
+    array3 = []
+    array4 = []
     names = ["Ability I","Ability II","Hidden Ability","Type I","Type II"]
     colors = list('rbygkm')
     eggs_data = pd.read_excel('C:/Work/Data/Types.xlsx',sheet_name='Лист1',index_col=0)
     ability_data = pd.read_excel('C:/Work/Data/Ability.xlsx',sheet_name='Лист1',index_col=0)
+    print(abilki)
     t_1 = {}
     t_2 = {}
     for i,abilki in enumerate(abilki):
@@ -162,10 +165,12 @@ def analyze(tipes,abilki,pryatki,win,massive):
             
    
     znch2 = list(t_2.values())
-    massive.append(pie(znch,klv,colors,names[0],win))
-    massive.append(pie(znch2,klv2,colors,names[1],win))
+    array.append(pie(znch,klv,colors,names[0]))
+    array1.append(pie(znch2,klv2,colors,names[1]))
+    
     
     t_1 = {}
+    t_2 = {}
     for i,pryatki in enumerate(pryatki):
         if t_1.get(pryatki) is not None:
             t_1[pryatki]+=1
@@ -179,7 +184,10 @@ def analyze(tipes,abilki,pryatki,win,massive):
             klv[i]="No Hidden Ability"
     znch = list(t_1.values())
     
-    massive.append(pie(znch,klv,colors,names[2],win))
+    array2.append(pie(znch,klv,colors,names[2]))
+    
+    
+    
     # plt.show()
     t_1 = {}
     t_2 = {}            
@@ -205,34 +213,52 @@ def analyze(tipes,abilki,pryatki,win,massive):
         else:
             klv2[i]="No Type"
     znch2 = list(t_2.values())
-    massive.append(pie(znch,klv,colors,names[3],win))
-    massive.append(pie(znch2,klv2,colors,names[4],win))
-def raspredelenie(typelist,win,massive):
-    print(0)
+    array3.append(pie(znch,klv,colors,names[3]))
+    array4.append(pie(znch2,klv2,colors,names[4]))
+
+    return array + array1 + array2 + array3 + array4
+def raspredelenie(typelist,win):
+    array = []
+    array1 = []
+    array2 = []
+    plt.close()
+   
     listochek = pd.read_excel('C:/Work/Data/pdx.test.xlsx',sheet_name='Sheet1',index_col=0)
     
-    print(0)
+   
     for i in range(0,max_id+1):
         for j in typelist:
             if j == data["Type I"][i] or j==data["Type II"][i]:
                 stats = pd.Series([data["HP"][i],data["Atk"][i],data["Def"][i],data["SpA"][i],data["SpD"][i],data["Spe"][i]],
                 index=["HP","Atk","Def","SpA","SpD","Spe"])
-                print(stats)
+                
                 listochek = listochek.append(stats,ignore_index=True)
-                print(listochek)
+                
     fig, ax = plt.subplots(figsize=(10, 10))
     ax.scatter(x = listochek['Atk'], y = listochek['Def'])            
     plt.xlabel("Attack")
     plt.ylabel("Defense")        
-    massive.append(fig)
+    plt.rc('xtick', labelsize=10)
+    array.append(fig)
     # plt.show()
+    plt.close()
     fig, ax = plt.subplots(figsize=(10, 10))
     ax.scatter(x = listochek['SpA'], y = listochek['SpD'])            
     plt.xlabel("SpA")
     plt.ylabel("SpD")
-    massive.append(fig)
+    plt.rc('xtick', labelsize=10)
+    array1.append(fig)
+    plt.close()
+    fig, ax = plt.subplots(figsize=(10, 10))
+    ax.scatter(x = listochek['HP'], y = listochek['Spe'])            
+    plt.xlabel("HP")
+    plt.ylabel("Spe")
+    plt.rc('xtick', labelsize=10)
+    array2.append(fig)
+    plt.close()
     # plt.show()
-def avrstats(listok,b_z,win,massive):
+    return array + array1 + array2
+def avrstats(listok,b_z,win):
     '''
     Parameters
     ----------
@@ -245,6 +271,8 @@ def avrstats(listok,b_z,win,massive):
     False.
 
     '''
+    plt.close()
+    array = []
     stats = [0,0,0,0,0,0]
     avr = 0
     podhodyat = {}
@@ -271,17 +299,21 @@ def avrstats(listok,b_z,win,massive):
     a_x.bar(arr2,arr,color = colors)
     fig.set_figwidth(16)
     plt.title("Average Stats")
+    plt.rc('xtick', labelsize=10)
     save("C:/Work/Graphics/Avr_stats")
-    massive.append(fig)
+    array.append(fig)
     # plt.show()
-def boxplot(win):
-    fig = plt.boxplot(data = data,column='Spe', by='Type I')
+    plt.close()
+    return array
 
-def boxplott(win):
-    playsound('C:\Work\Data\pika.mp3')
-    fig = plt.figure(figsize=(340,170))
-    fig = data.boxplot(column='Spe', by='Type I')
-    fig = mat.figure.Figure(fig)
+
+def boxplot():
+    array=[]
+    plt.close()
+    fig = data.boxplot(column=["HP","Atk","Def","SpA","SpD","Spe"])#, by='Type I')
+    array.append(fig)
+    plt.close()
+    return array
 
     
     
@@ -334,7 +366,7 @@ def cheker(id1,id2,d_b):
                 return True
 
     elif(d_b["Egg Group I"][id1]!=0 and d_b["Egg Group II"][id1]==0):
-        print("HI03")
+        
         if(d_b["Egg Group I"][id2]!=0 and d_b["Egg Group II"][id2]!=0):
             if((  proverka(d_b["Egg Group I"][id1],d_b["Egg Group I"][id2])
                  +proverka(d_b["Egg Group I"][id1],d_b["Egg Group II"][id2]))>0):
