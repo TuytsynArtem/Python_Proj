@@ -19,7 +19,5 @@ def pie(value,ammount,color,name,win):
     fig=plt.gcf()
     fig.set_size_inches(7,7)
     save("C:/Work/Graphics/"+str(name))
-    canvas = FigureCanvasTkAgg(fig, win)
-    canvas.draw()
-    canvas.get_tk_widget().place(x = 10, y = 10, width = 340, height = 180)
+    return fig
     # plt.show()

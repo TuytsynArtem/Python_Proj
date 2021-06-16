@@ -7,8 +7,24 @@ import tkinter as tki
 import tkinter.ttk as ttk
 from playsound import playsound
 from pokemons_reproduction import boxplot,raspredelenie,reproduction
-from pokemons_reproduction import reproduction,cheker
+from pokemons_reproduction import reproduction,cheker,graphs
+from functools import partial 
 
+
+
+
+fig = []
+
+# def clck2():
+#     if i+1>=0:
+#         graphs(fig[i+1],win0)
+#         i+=1
+# def clck3():
+#     if i-1<=len(fig):
+#         graphs(fig[i-1],win0)
+#         i-=1
+    
+    
 def clck():
     '''
     Parameters
@@ -16,17 +32,27 @@ def clck():
     -------
     None.
     '''
-    try:
-        ammount = int(txt.get())
-        print(ammount)
-        if cheker(db_1.loc[db_1["Name"]==cmb_1.get()].index.values[0],db_1.loc[db_1["Name"]==cmb_2.get()].index.values[0],db_3):
-            print("размножение возможно:")
-            playsound('C:\Work\Data\pika.mp3')
-            reproduction(db_1.loc[db_1["Name"]==cmb_1.get()].index.values[0],db_1.loc[db_1["Name"]==cmb_2.get()].index.values[0],db_3,ammount,win0)
-        else:
-            print("размножение невозможно:")
-    except:
-        print("Введите количество скрещиваний")
+    i = 0
+    # try:
+    ammount = int(txt.get())
+    if cheker(db_1.loc[db_1["Name"]==cmb_1.get()].index.values[0],db_1.loc[db_1["Name"]==cmb_2.get()].index.values[0],db_3):
+        # print("размножение возможно:")
+        playsound('C:\Work\Data\pika.mp3')
+        # graphs((reproduction(db_1.loc[db_1["Name"]==cmb_1.get()].index.values[0],db_1.loc[db_1["Name"]==cmb_2.get()].index.values[0],db_3,ammount,win0))[i],win0)
+        graphs((reproduction(db_1.loc[db_1["Name"]==cmb_1.get()].index[0],db_1.loc[db_1["Name"]==cmb_2.get()].index[0],db_3,ammount,win0,fig))[i],win0)
+        print(len((reproduction(db_1.loc[db_1["Name"]==cmb_1.get()].index[0],db_1.loc[db_1["Name"]==cmb_2.get()].index[0],db_3,ammount,win0,fig))))
+        lbl_100 = tki.Label(text = 'Размножение возможно', font = ('Times', 12))
+        lbl_100.place(x = 420, y = 150)
+        btn67.place(x = 350, y = 110 )
+        btn76.place(x = 350, y = 150 )
+    else:
+        # print("размножение невозможно:")
+        lbl_100 = tki.Label(text = 'Размножение невозможно', font = ('Times', 12))
+        lbl_100.place(x = 420, y = 150)
+        btn67.place_forget()
+        btn76.place_forget()
+    # except:
+    #     print("Введите количество скрещиваний")
 
 db_1 = pd.read_excel('C:\Work\Data\Pokname.xlsx',sheet_name='Sheet1', index_col=(0))
 db_3 = pd.read_excel('C:\Work\Data\Pdx.xlsx',sheet_name='Sheet1', index_col=(0))
@@ -38,12 +64,15 @@ win0.geometry('800x500+300+200')
 f_top = tki.LabelFrame(win0, text = 'визуализация')
 f_top.place(x = 10, y = 10,  width = 340, height = 180)
 
+btn67 = tki.Button(win0, text = 'Далее', font = ('Times', 12))#,command = clck2)
+btn76 = tki.Button(win0, text = 'Назад', font = ('Times', 12))#,command = clck3)
+
 btn = tki.Button(win0, text = 'Размножить', font = ('Times', 12))
 btn.place(x = 650, y = 120 )
 
 
 lbl_2 = tki.Label(win0, text = 'База данных', font = ('Times', 12))#, command = boxplot)
-lbl_2.place(x = 15, y = 200 )
+lbl_2.place(x = 15, y = 195 )
 i =0
 var_3 =[]
 
@@ -99,10 +128,11 @@ txt.place(x=450, y= 120 )
 date_list.reverse()
 tree.place(x = 15 , y = 225, width=750, height=240)
 
+
 # создание кнопки
 # print(db_1.loc[db_1["Name"]==cmb_1.get()].index.values[0])
 # print(db_1.loc(db_1["Name"]==cmb_1.get()).index.value[0],db_1.loc(db_1["Name"]==cmb_2.get()).index.value[0],txt.get())
-btn = tki.Button(win0, text = 'Размножить', font = ('Times', 12),command = clck())
+btn = tki.Button(win0, text = 'Размножить', font = ('Times', 12),command = clck)
 btn.place(x = 650, y = 120 )
 # создание таблицы
 
@@ -120,13 +150,13 @@ scrl_y.place(x = 765, y = 225, width = 20, height = 240)
 tree.configure(yscrollcommand = scrl_y.set)
 
 btn_1 = tki.Button(win0, text = 'Удалить покемона', font = ('Times', 12))#, command = clck_1)
-btn_1.place(x = 125, y = 190, width = 130, height = 35)
+btn_1.place(x = 125, y = 190, width = 195, height = 35)
 
 btn_2 = tki.Button(win0, text = 'Добавить покемона', font = ('Times', 12))#, command = clck_2)
-btn_2.place(x = 250, y = 190, width = 130, height = 35 )
+btn_2.place(x = 315, y = 190, width = 195, height = 35 )
 
-btn_3 = tki.Button(win0, text = 'Добавить характеристику', font = ('Times', 12))#, command = clck_3)
-btn_3.place(x = 375, y = 190, width = 130, height = 35 )
+# btn_3 = tki.Button(win0, text = 'Добавить характеристику', font = ('Times', 10))#, command = clck_3)
+# btn_3.place(x = 375, y = 190, width = 130, height = 35 )
 
 btn_4 = tki.Button(win0, text = "Обновить таблицу", font = ('Times', 12))#, command = clck_4)
 btn_4.place(x = 500, y = 190, width = 140, height = 35 )

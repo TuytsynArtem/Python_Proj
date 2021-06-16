@@ -17,9 +17,17 @@ eggs_connection = pd.read_excel('C:/Work/Data/eggs_connection.xlsx',sheet_name='
 max_id = max(data.index)
 
 
+
 # one,two=int(input("Введите 1-ое id: ")),int(input("Введите 2-ое id: "))
 # kolvo=int(input("Введите количество размножений для анализа вероятностей: "))
-def reproduction(raz,dva,baza,kol,win):
+
+
+def graphs(fig,win):
+    canvas = FigureCanvasTkAgg(fig, win)
+    canvas.draw()
+    canvas.get_tk_widget().place(x = 10, y = 10, width = 340, height = 180)
+
+def reproduction(raz,dva,baza,kol,win,massive):
     '''
     Parameters
     ----------
@@ -108,11 +116,12 @@ def reproduction(raz,dva,baza,kol,win):
         else:
             pok_typelist.append(typelist[randnum])
     print("HELL")        
-    analyze(pok_typelist,pok_abilities,pok_hidden,win)
-    avrstats(pok_typelist,baza,win)
-    raspredelenie(typelist,win)
+    analyze(pok_typelist,pok_abilities,pok_hidden,win,massive)
+    avrstats(pok_typelist,baza,win,massive)
+    raspredelenie(typelist,win,massive)
+    return massive
     # boxplot(win)
-def analyze(tipes,abilki,pryatki,win):
+def analyze(tipes,abilki,pryatki,win,massive):
     '''
     Parameters
     ----------
@@ -153,8 +162,8 @@ def analyze(tipes,abilki,pryatki,win):
             
    
     znch2 = list(t_2.values())
-    pie(znch,klv,colors,names[0],win)
-    pie(znch2,klv2,colors,names[1],win)
+    massive.append(pie(znch,klv,colors,names[0],win))
+    massive.append(pie(znch2,klv2,colors,names[1],win))
     
     t_1 = {}
     for i,pryatki in enumerate(pryatki):
@@ -170,12 +179,7 @@ def analyze(tipes,abilki,pryatki,win):
             klv[i]="No Hidden Ability"
     znch = list(t_1.values())
     
-    pie(znch,klv,colors,names[2],win)
-    
-    save("C:/Work/Graphics/Hidden_Ability")
-    canvas = FigureCanvasTkAgg(pie, win)
-    canvas.draw()
-    canvas.get_tk_widget().place(x = 10, y = 10, width = 340, height = 180)
+    massive.append(pie(znch,klv,colors,names[2],win))
     # plt.show()
     t_1 = {}
     t_2 = {}            
@@ -201,9 +205,9 @@ def analyze(tipes,abilki,pryatki,win):
         else:
             klv2[i]="No Type"
     znch2 = list(t_2.values())
-    pie(znch,klv,colors,names[3],win)
-    pie(znch2,klv2,colors,names[4],win) 
-def raspredelenie(typelist,win):
+    massive.append(pie(znch,klv,colors,names[3],win))
+    massive.append(pie(znch2,klv2,colors,names[4],win))
+def raspredelenie(typelist,win,massive):
     print(0)
     listochek = pd.read_excel('C:/Work/Data/pdx.test.xlsx',sheet_name='Sheet1',index_col=0)
     
@@ -220,19 +224,15 @@ def raspredelenie(typelist,win):
     ax.scatter(x = listochek['Atk'], y = listochek['Def'])            
     plt.xlabel("Attack")
     plt.ylabel("Defense")        
-    canvas = FigureCanvasTkAgg(fig, win)
-    canvas.draw()
-    canvas.get_tk_widget().place(x = 10, y = 10, width = 340, height = 180)
+    massive.append(fig)
     # plt.show()
     fig, ax = plt.subplots(figsize=(10, 10))
     ax.scatter(x = listochek['SpA'], y = listochek['SpD'])            
     plt.xlabel("SpA")
     plt.ylabel("SpD")
-    canvas = FigureCanvasTkAgg(fig, win)
-    canvas.draw()
-    canvas.get_tk_widget().place(x = 10, y = 10, width = 340, height = 180)
+    massive.append(fig)
     # plt.show()
-def avrstats(listok,b_z,win):
+def avrstats(listok,b_z,win,massive):
     '''
     Parameters
     ----------
@@ -272,25 +272,17 @@ def avrstats(listok,b_z,win):
     fig.set_figwidth(16)
     plt.title("Average Stats")
     save("C:/Work/Graphics/Avr_stats")
-    canvas = FigureCanvasTkAgg(fig, win)
-    canvas.draw()
-    canvas.get_tk_widget().place(x = 10, y = 10, width = 340, height = 180)
+    massive.append(fig)
     # plt.show()
 def boxplot(win):
     fig = plt.boxplot(data = data,column='Spe', by='Type I')
-    canvas = FigureCanvasTkAgg(fig, win)
-    canvas.draw()
-    canvas.get_tk_widget().place(x = 10, y = 10, width = 340, height = 180)
+
 def boxplott(win):
     playsound('C:\Work\Data\pika.mp3')
     fig = plt.figure(figsize=(340,170))
-    print(type(fig))
     fig = data.boxplot(column='Spe', by='Type I')
-    print(type(fig))
     fig = mat.figure.Figure(fig)
-    canvas = FigureCanvasTkAgg(fig, win)
-    canvas.draw()
-    canvas.get_tk_widget().place(x = 10, y = 10, width = 340, height = 180)
+
     
     
 def proverka(t_1,b_1):
