@@ -115,6 +115,7 @@ def clck():
         lbl_abl13.place_forget()
         sortirovka(HP_1, HP_2,Atk_1, Atk_2,Def_1, Def_2,SpA_1, SpA_2, SpD_1, SpD_2,Spe_1, Spe_2,TypeI,TypeII,AbilityI,AbilityII,HiddenAbility,EggGroupI,EggGroupII)
         win1.destroy()
+    
 
 
 def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
