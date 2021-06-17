@@ -1,21 +1,31 @@
-import pandas as pd
+# -*- coding: utf-8 -*-
+"""
+Created on Tue May  4 19:34:32 2021
+
+@author: User
+"""
 import tkinter as tki
 import tkinter.ttk as ttk
-db_1 = pd.read_excel('C:\Work\Data\Pokname.xlsx',sheet_name='Sheet1', index_col=(0))
-db_3 = pd.read_excel('C:\Work\Data\pdx.xlsx',sheet_name='Sheet1', index_col=(0))
+import pandas as pd
+
+db_1 = pd.read_excel('C:/Work/Data/Pokname.xlsx',sheet_name='Sheet1', index_col=(0))
+db_3 = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Sheet1', index_col=(0))
 
 def clck():
-    db_1 = pd.read_excel('C:\Work\Data\Pokname.xlsx',sheet_name='Sheet1', index_col=(0))
-    db_3 = pd.read_excel('C:\Work\Data\pdx.xlsx',sheet_name='Sheet1', index_col=(0))
-    
-    df_1 = db_1
-    df_3 = db_3
-    
+    '''
+    Parameters
+    ----------
+    -------
+    None.
+    '''
+    df_1 = pd.read_excel('C:/Work/Data/Pokname.xlsx',sheet_name='Sheet1', index_col=(0))
+    df_3 = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Sheet1', index_col=(0))
+
     df_1 = df_1.drop(db_1[db_1['Name']==cmb_1.get()].index[0])
     df_3 = df_3.drop(db_1[db_1['Name']==cmb_1.get()].index[0])
-        
-    df_1.to_excel('C:\Work\Data\Pokname.xlsx',sheet_name='Sheet1')
-    df_3.to_excel('C:\Work\Data\pdx.xlsx', sheet_name='Sheet1')
+
+    df_1.to_excel('C:/Work/Data/Pokname.xlsx',sheet_name='Sheet1')
+    df_3.to_excel('C:/Work/Data/pdx.xlsx', sheet_name='Sheet1')
     win1.destroy()
 
 win1= tki.Tk()
@@ -25,7 +35,6 @@ var_3 = []
 list_id =[]
 c = []
 len_ = db_1["Name"]
-l=0
 
 lbl_3 = tki.Label(win1, text = 'Выберите покемона для удаления', font = ('Times', 12))
 lbl_3.place(x = 0, y = 0)
@@ -40,10 +49,3 @@ btn_6 = tki.Button(win1, text = "Удалить", font = ('Times', 12), command 
 btn_6.place(x = 250, y =0, width = 100, height = 35 )
 
 win1.mainloop()
-
-
-
-
-
-
-

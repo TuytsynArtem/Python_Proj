@@ -4,9 +4,10 @@ Created on Tue May  4 19:34:32 2021
 
 @author: User
 """
-import pandas as pd
 import tkinter as tki
 import tkinter.ttk as ttk
+import pandas as pd
+
 
 db_1 = pd.read_excel('C:/Work/Data/Pokname.xlsx',sheet_name='Sheet1', index_col=(0))
 db_2 = pd.read_excel('C:/Work/Data/Types.xlsx',sheet_name='Лист1', index_col=(0))
@@ -220,11 +221,11 @@ def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
                 if len(suitable_id) == 0:
                     stop_flag = True
             else:
-                for i in range(len(data)):
-                    if (int(temp_atk_1) <= int(data["Atk"][i])) and (
-                        int(temp_atk_2) >= int(data["Atk"][i])
+                for k in range(len(data)):
+                    if (int(temp_atk_1) <= int(data["Atk"][k])) and (
+                        int(temp_atk_2) >= int(data["Atk"][k])
                     ):
-                        suitable_id.append(i)
+                        suitable_id.append(k)
                 if len(suitable_id) == 0:
                     stop_flag = True
 
@@ -475,7 +476,7 @@ def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
                     stop_flag = True
         temp_data_pd = pd.DataFrame()
         print("DSADS")
-        output_file_name = "C:/Work/Data/New_Database/"+ entry.get() + ".xlsx"
+        output_file_name = "C:/Work/Outputs/"+ entry.get() + ".xlsx"
 
         db_id = pd.read_excel("C:/Work/Data/Pdx.xlsx", sheet_name="Sheet1", index_col=0)
         id_list = list(db_id.values)

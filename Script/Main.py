@@ -4,16 +4,15 @@ Created on Tue May  4 19:34:32 2021
 
 @author: User
 """
-# import sys
-# sys.path.append('../')
 import tkinter.ttk as ttk
 import tkinter as tki
 import pandas as pd
 from playsound import playsound
+import os
 # import file
 # file.path.append("C:\Work\Library\pokemons_reproduction.py")
-from  pokemons_reproduction.py import reproduction,cheker,graphs
-import os
+os.chdir('C:\Work\Library')
+from pokemons_reproduction import reproduction,cheker,graphs
 
 i = 0
 F = []
@@ -165,10 +164,22 @@ scrl_y = ttk.Scrollbar(win0, command = tree.yview, orient = tki.VERTICAL)
 scrl_y.place(x = 765, y = 295, width = 20, height = 240)
 tree.configure(yscrollcommand = scrl_y.set)
 def clck5():
+    '''
+    Parameters
+    ----------
+    -------
+    None.
+    '''
     os.system("python C:/Work/Library/win_del.py")
 btn_1 = tki.Button(win0, text = 'Удалить покемона', font = ('Times', 12),command = clck5)
 btn_1.place(x = 125, y = 260, width = 195, height = 35)
 def clck4():
+    '''
+    Parameters
+    ----------
+    -------
+    None.
+    '''
     os.system("python C:/Work/Library/add_win.py")
 btn_2 = tki.Button(win0, text = 'Добавить покемона', font = ('Times', 12),command = clck4)
 btn_2.place(x = 315, y = 260, width = 195, height = 35 )
@@ -179,6 +190,12 @@ btn_2.place(x = 315, y = 260, width = 195, height = 35 )
 btn_4 = tki.Button(win0, text = "Обновить таблицу", font = ('Times', 12))
 btn_4.place(x = 500, y = 260, width = 140, height = 35 )
 def clck6():
+    '''
+    Parameters
+    ----------
+    -------
+    None.
+    '''
     os.system("python C:/Work/Library/otbor.py")
 btn_5 = tki.Button(win0, text = "Отобрать", font = ('Times', 12),command = clck6)
 btn_5.place(x = 640, y = 260, width = 140, height = 35 )
