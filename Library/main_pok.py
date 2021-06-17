@@ -160,8 +160,9 @@ tree.configure(xscrollcommand = scrl_x.set)
 scrl_y = ttk.Scrollbar(win0, command = tree.yview, orient = tki.VERTICAL)
 scrl_y.place(x = 765, y = 295, width = 20, height = 240)
 tree.configure(yscrollcommand = scrl_y.set)
-
-btn_1 = tki.Button(win0, text = 'Удалить покемона', font = ('Times', 12))
+def clck5():
+    os.system("python C:/Work/Library/win_del.py")
+btn_1 = tki.Button(win0, text = 'Удалить покемона', font = ('Times', 12),command = clck5)
 btn_1.place(x = 125, y = 260, width = 195, height = 35)
 def clck4():
     os.system("python C:/Work/Library/add_win.py")
