@@ -4,15 +4,15 @@ Created on Tue May  4 19:34:32 2021
 
 @author: User
 """
-import sys
-sys.path.append('../')
+# import sys
+# sys.path.append('../')
 import tkinter.ttk as ttk
 import tkinter as tki
 import pandas as pd
 from playsound import playsound
 # import file
 # file.path.append("C:\Work\Library\pokemons_reproduction.py")
-from  Library.pokemons_reproduction.py import reproduction,cheker,graphs
+from  pokemons_reproduction.py import reproduction,cheker,graphs
 import os
 
 i = 0
