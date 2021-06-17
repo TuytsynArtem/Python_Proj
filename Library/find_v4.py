@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
 
 import pandas as pd
 data = pd.read_excel('C:/Work/Data/Pdx.xlsx',sheet_name='Sheet1')
 def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
                temp_spa_1,temp_spa_2,temp_spd_1,temp_spd_2,temp_spe_1,
-               temp_spe_2,temp_type1_1,temp_type1_2,
-               temp_ability1,temp_ability2,
-               temp_hidden_ability,temp_egg1_1,
-               temp_egg1_2,temp_egg2_1,temp_egg2_2):
+               temp_spe_2,temp_type1_1,temp_type2_1,
+               temp_ability1_1,temp_ability2_1,
+               temp_hidden_ability_1,temp_egg1_1,temp_egg2_1):
     # print("Введите диапазон HP")
     # temp_hp_1=input()
     # temp_hp_2=input()
@@ -22,31 +20,31 @@ def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
     # temp_spa_2=input()
     # print("Введите диапазон SpD")
     # temp_spd_1=input()
-    # temp_spd_2=input()S
+    # temp_spd_2=input()
     # print("Введите диапазон Spe")
     # temp_spe_1=input()
     # temp_spe_2=input()
     # print("Введите диапазон Type I")
     # temp_type1_1=input()
-    # temp_type1_2=input()
+    temp_type1_2=temp_type1_1
     # print("Введите диапазон Type II")
     # temp_type2_1=input()
-    # temp_type2_2=input()
+    temp_type2_2=temp_type2_1
     # print("Введите диапазон Ability I")
     # temp_ability1_1=input()
-    # temp_ability1_2=input()
+    temp_ability1_2=temp_ability1_1
     # print("Введите диапазон Ability II")
     # temp_ability2_1=input()
-    # temp_ability2_2=input()
+    temp_ability2_2=temp_ability2_1
     # print("Введите  диапазон Hidden Ability")
     # temp_hidden_ability_1=input()
-    # temp_hidden_ability_2=input()
+    temp_hidden_ability_2=temp_hidden_ability_1
     # print("Введите диапазон Egg  Group I")
     # temp_egg1_1=input()
-    # temp_egg1_2=input()
+    temp_egg1_2= temp_egg1_1
     # print("Введите диапазон Egg Gruop II")
     # temp_egg2_1=input()
-    # temp_egg2_2=input()
+    temp_egg2_2=temp_egg2_1
     
     suitable_id = []
     temp_suitable_id = []
@@ -193,7 +191,7 @@ def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
                     if ((int(temp_type2_1) <= int(data['Type II'][i])) and (int(temp_type2_2) >= int(data['Type II'][i]))) :
                         suitable_id.append(i)            
                 if (len(suitable_id) ==0):
-                        stop_flag = True     
+                       stop_flag = True     
     
     if (stop_flag == False):
         if ((int(temp_ability1_1) !=0) and (int(temp_ability1_2) !=0) ):
@@ -211,7 +209,7 @@ def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
                     if ((int(temp_ability1_1) <= int(data['Ability I'][i])) and (int(temp_ability1_2) >= int(data['Ability I'][i]))) :
                         suitable_id.append(i)            
                 if (len(suitable_id) ==0):
-                        stop_flag = True       
+                       stop_flag = True       
                           
     if (stop_flag == False):
         if ((int(temp_ability2_1) !=0) and (int(temp_ability2_2) !=0) ):
@@ -229,26 +227,26 @@ def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
                     if ((int(temp_ability2_1) <= int(data['Ability II'][i])) and (int(temp_ability2_2) >= int(data['Ability II'][i]))) :
                         suitable_id.append(i)            
                 if (len(suitable_id) ==0):
-                        stop_flag = True    
-
+                       stop_flag = True    
+                                          
     if (stop_flag == False):
-        if ((int(temp_hidden_ability)  !=0) ):
+        if ((int(temp_hidden_ability_1) !=0) and (int(temp_hidden_ability_2) !=0) ):
             if (len(suitable_id) != 0):
                     temp_suitable_id.clear()
                     temp_suitable_id = suitable_id.copy()
                     suitable_id.clear()
                     for j in range(len(temp_suitable_id)):
-                        if ((int(temp_hidden_ability) <= data['Hidden Ability'][temp_suitable_id[j]]) ) :
+                        if ((int(temp_hidden_ability_1) <= data['Hidden Ability'][temp_suitable_id[j]]) and (int(temp_hidden_ability_2) >= data['Hidden Ability'][temp_suitable_id[j]])) :
                                 suitable_id.append(temp_suitable_id[j])        
                     if (len(suitable_id) ==0):
                         stop_flag = True        
             else:
                 for i in range(len(data)):
-                    if ((int(temp_hidden_ability) <= int(data['Hidden Ability'][i])) ) :
+                    if ((int(temp_hidden_ability_1) <= int(data['Hidden Ability'][i])) and (int(temp_hidden_ability_2) >= int(data['Hidden Ability'][i]))) :
                         suitable_id.append(i)            
                 if (len(suitable_id) ==0):
-                        stop_flag = True               
-
+                       stop_flag = True               
+                       
     if (stop_flag == False):
         if ((int(temp_egg1_1) !=0) and (int(temp_egg1_2) !=0) ):
             if (len(suitable_id) != 0):
@@ -291,7 +289,7 @@ def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
         
     temp_data_pd = pd.DataFrame()
     print("введи название файла для вывода ")
-    output_file_name ="C:/Work/Data/" + input()
+    output_file_name ="C:/Work/Data/" + input() +".xlsx"
     
     print(output_file_name)
     
@@ -306,9 +304,5 @@ def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
             
         temp_data_pd.to_excel(output_file_name)
     
-
-
-
-
 
 

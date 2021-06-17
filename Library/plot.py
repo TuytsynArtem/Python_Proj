@@ -5,7 +5,6 @@ Created on Tue May  4 19:34:32 2021
 @author: User
 """
 import matplotlib.pyplot as plt
-
 def save(path):
     '''
     Parameters

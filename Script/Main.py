@@ -4,13 +4,17 @@ Created on Tue May  4 19:34:32 2021
 
 @author: User
 """
-
+import sys
+sys.path.append('../')
 import tkinter.ttk as ttk
 import tkinter as tki
 import pandas as pd
 from playsound import playsound
-from pokemons_reproduction import reproduction,cheker,graphs
+# import file
+# file.path.append("C:\Work\Library\pokemons_reproduction.py")
+from  Library.pokemons_reproduction.py import reproduction,cheker,graphs
 import os
+
 i = 0
 F = []
 def clck2():
@@ -174,8 +178,9 @@ btn_2.place(x = 315, y = 260, width = 195, height = 35 )
 
 btn_4 = tki.Button(win0, text = "Обновить таблицу", font = ('Times', 12))
 btn_4.place(x = 500, y = 260, width = 140, height = 35 )
-
-btn_5 = tki.Button(win0, text = "Отобрать", font = ('Times', 12))
+def clck6():
+    os.system("python C:/Work/Library/otbor.py")
+btn_5 = tki.Button(win0, text = "Отобрать", font = ('Times', 12),command = clck6)
 btn_5.place(x = 640, y = 260, width = 140, height = 35 )
 
 win0.mainloop()

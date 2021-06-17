@@ -21,6 +21,7 @@ def clck():
     SpD_2 = var[9].get()
     Spe_1 = var[10].get()
     Spe_2 = var[11].get()
+    print(HP_1)
     TypeI = db_2[db_2['Type_name']==cmb[0].get()].index[0]
     TypeII = db_2[db_2['Type_name']==cmb[1].get()].index[0]
     AbilityI = db_4[db_4['Ability']==cmb[2].get()].index[0]
@@ -70,35 +71,35 @@ def clck():
         lbl_abl23.place_forget()
         lbl_abl13.place_forget()
         lbl_egg.place_forget()
-    elif TypeI==TypeII:
+    elif TypeI==TypeII and (TypeI!=0 or TypeI!=0):
         lbl_type.place(x  = 50, y = 290)
         lbl_HI.place_forget()
         lbl_abl12.place_forget()
         lbl_abl23.place_forget()
         lbl_abl13.place_forget()
         lbl_egg.place_forget()
-    elif AbilityI==AbilityII:
+    elif AbilityI==AbilityII and (AbilityI!=0 or AbilityII!=0):
         lbl_abl12.place(x  = 50, y = 370)
         lbl_HI.place_forget()
         lbl_abl23.place_forget()
         lbl_abl13.place_forget()
         lbl_egg.place_forget()
         lbl_type.place_forget()
-    elif HiddenAbility==AbilityII:
+    elif HiddenAbility==AbilityII and (HiddenAbility!=0 or AbilityII!=0):
         lbl_abl23.place(x  = 50, y = 410)
         lbl_HI.place_forget()
         lbl_abl13.place_forget()
         lbl_egg.place_forget()
         lbl_type.place_forget()
         lbl_abl12.place_forget()
-    elif HiddenAbility==AbilityI:
+    elif HiddenAbility==AbilityI and (HiddenAbility!=0 or AbilityI!=0):
         lbl_abl13.place(x  = 50, y = 410)
         lbl_egg.place_forget()
         lbl_HI.place_forget()
         lbl_type.place_forget()
         lbl_abl12.place_forget()
         lbl_abl23.place_forget()
-    elif EggGroupI==EggGroupII:
+    elif EggGroupI==EggGroupII and (EggGroupI!=0 or EggGroupII!=0):
         lbl_egg.place(x  = 50, y = 490)
         lbl_HI.place_forget()
         lbl_type.place_forget()
@@ -118,15 +119,33 @@ def clck():
 
 def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
                temp_spa_1,temp_spa_2,temp_spd_1,temp_spd_2,temp_spe_1,
-               temp_spe_2,temp_type1_1,temp_type1_2,temp_type2_1,temp_type2_2,
-               temp_ability1_1,temp_ability1_2,temp_ability2_1,temp_ability2_2,
-               temp_hidden_ability_1,temp_hidden_ability_2,temp_egg1_1,
-               temp_egg1_2,temp_egg2_1,temp_egg2_2):
+               temp_spe_2,temp_type1_1,temp_type2_1,
+               temp_ability1_1,temp_ability2_1,
+               temp_hidden_ability_1,temp_egg1_1,temp_egg2_1):
+    print("222")
     data = pd.read_excel('C:/Work/Data/Pdx.xlsx',sheet_name='Sheet1')
     suitable_id = []
     temp_suitable_id = []
     stop_flag = False
-    
+    temp_type1_2=temp_type1_1
+    # print("Введите диапазон Type II")
+    # temp_type2_1=input()
+    temp_type2_2=temp_type2_1
+    # print("Введите диапазон Ability I")
+    # temp_ability1_1=input()
+    temp_ability1_2=temp_ability1_1
+    # print("Введите диапазон Ability II")
+    # temp_ability2_1=input()
+    temp_ability2_2=temp_ability2_1
+    # print("Введите  диапазон Hidden Ability")
+    # temp_hidden_ability_1=input()
+    temp_hidden_ability_2=temp_hidden_ability_1
+    # print("Введите диапазон Egg  Group I")
+    # temp_egg1_1=input()
+    temp_egg1_2= temp_egg1_1
+    # print("Введите диапазон Egg Gruop II")
+    # temp_egg2_1=input()
+    temp_egg2_2=temp_egg2_1
     
     if (stop_flag == False):
         if ((int(temp_hp_1) !=0) and (int(temp_hp_2) !=0) ):#check
@@ -358,19 +377,20 @@ def sortirovka(temp_hp_1,temp_hp_2,temp_atk_1,temp_atk_2,temp_def_1,temp_def_2,
                     if ((int(temp_egg2_1) <= int(data['Egg Group II'][i])) and (int(temp_egg2_2) >= int(data['Egg Group II'][i]))) :
                         suitable_id.append(i)            
                 if (len(suitable_id) ==0):
-                       stop_flag = True
+                       stop_flag = True                       
         temp_data_pd = pd.DataFrame()
-    output_file_name ="C:/Work/Output/" + entry.get()
-    
-    db_id = pd.read_excel('C:/Work/Data/Pdx.xlsx',sheet_name='Sheet1',index_col=0)
-    id_list = list(db_id.values)
-    
-    if (len(suitable_id)!= 0):
-        for element in suitable_id:
-            
-            pokemon2 = pd.Series([id_list[element][0],id_list[element][1],id_list[element][2],id_list[element][3],id_list[element][4],id_list[element][5],id_list[element][6],id_list[element][7],id_list[element][8],id_list[element][9],id_list[element][10],id_list[element][11],id_list[element][12]], index=["HP","Atk","Def","SpA","SpD","Spe","Type I","Type II","Ability I","Ability II","Hidden Ability","Egg Group I","Egg Group II"])
-            temp_data_pd=temp_data_pd.append(pokemon2,ignore_index=True)
-            
+        print("DSADS")
+        output_file_name ="C:/Work/Data/New_Database/" + entry.get() + ".xlsx"
+        
+        db_id = pd.read_excel('C:/Work/Data/Pdx.xlsx',sheet_name='Sheet1',index_col=0)
+        id_list = list(db_id.values)
+        
+        if (len(suitable_id)!= 0):
+            for element in suitable_id:
+                
+                pokemon2 = pd.Series([id_list[element][0],id_list[element][1],id_list[element][2],id_list[element][3],id_list[element][4],id_list[element][5],id_list[element][6],id_list[element][7],id_list[element][8],id_list[element][9],id_list[element][10],id_list[element][11],id_list[element][12]], index=["HP","Atk","Def","SpA","SpD","Spe","Type I","Type II","Ability I","Ability II","Hidden Ability","Egg Group I","Egg Group II"])
+                temp_data_pd=temp_data_pd.append(pokemon2,ignore_index=True)
+        print(temp_data_pd)
         temp_data_pd.to_excel(output_file_name)
     
 win1 = tki.Tk()

@@ -26,7 +26,7 @@ def graphs(fig,win):
     Parameters
     ----------
     fig : TYPE list
-        list of figures
+        item of list of figures
     win : TYPE Tk
         window
     -------
@@ -241,6 +241,7 @@ def raspredelenie(typelist):
     plt.ylabel("Defense")
     plt.rc('xtick', labelsize=10)
     array.append(fig)
+    save("C:/Work/Graphics/AtkDef")
     # plt.show()
     plt.close()
     fig, axi = plt.subplots(figsize=(10, 10))
@@ -249,6 +250,7 @@ def raspredelenie(typelist):
     plt.ylabel("SpD")
     plt.rc('xtick', labelsize=10)
     array.append(fig)
+    save("C:/Work/Graphics/SpASpD")
     plt.close()
     fig, axi = plt.subplots(figsize=(10, 10))
     axi.scatter(x = listochek['HP'], y = listochek['Spe'])
@@ -256,6 +258,7 @@ def raspredelenie(typelist):
     plt.ylabel("Spe")
     plt.rc('xtick', labelsize=10)
     array.append(fig)
+    save("C:/Work/Graphics/HPSpe")
     plt.close()
     # plt.show()
     return array
