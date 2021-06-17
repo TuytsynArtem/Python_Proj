@@ -5,10 +5,11 @@ Created on Tue May  4 19:34:32 2021
 @author: User
 """
 import random
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pandas as pd
 import matplotlib.pyplot as plt
 from plot import save,pie
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 
 
 data = pd.read_excel('C:/Work/Data/pdx.xlsx',sheet_name='Sheet1',index_col=0)
@@ -47,9 +48,8 @@ def reproduction(raz,dva,baza,kol):
         database of pok_typelist
     kol : TYPE Integer
     ammount of cicle
-    Returns True
+    Returns array
     -------
-    False.
 
     '''
     hidden = []
@@ -119,7 +119,7 @@ def reproduction(raz,dva,baza,kol):
         elif randnum == len(typelist):
             pok_typelist.append(0)
         else:
-            pok_typelist.append(typelist[randnum]) 
+            pok_typelist.append(typelist[randnum])
     boxplot()
     return (analyze(pok_typelist,pok_abilities,pok_hidden)+
             avrstats(pok_typelist,baza)+raspredelenie(typelist))
@@ -130,9 +130,8 @@ def analyze(tipes,abilki,pryatki):
     ----------
     tipes : TYPE Array
         list of pok_typelist type
-    Returns True
+    Returns array
     -------
-    False.
 
     '''
     array = []
@@ -219,7 +218,7 @@ def raspredelenie(typelist):
     ----------
     typelist : TYPE Array
         list of type
-    Returns True
+    Returns array
     -------
     False.
 
@@ -270,9 +269,8 @@ def avrstats(listok,b_z):
         list of pok_typelist type
     d_z : TYPE DataFrame
         database of pok_typelist
-    Returns True
+    Returns array
     -------
-    False.
 
     '''
     plt.close()
@@ -334,7 +332,7 @@ def proverka(t_1,b_1):
 
     Returns 1
     -------
-    None.
+    Returns 0
 
     '''
     if eggs_connection[t_1][b_1]==1:

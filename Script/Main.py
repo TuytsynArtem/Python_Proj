@@ -4,15 +4,17 @@ Created on Tue May  4 19:34:32 2021
 
 @author: User
 """
+import os
 import tkinter.ttk as ttk
 import tkinter as tki
-import pandas as pd
 from playsound import playsound
-import os
-# import file
-# file.path.append("C:\Work\Library\pokemons_reproduction.py")
-os.chdir('C:\Work\Library')
+import pandas as pd
+os.chdir('C:/Work/Library')
 from pokemons_reproduction import reproduction,cheker,graphs
+
+
+
+
 
 i = 0
 F = []
@@ -79,7 +81,7 @@ db_3 = pd.read_excel('C:/Work/Data/Pdx.xlsx',sheet_name='Sheet1', index_col=(0))
 
 win0= tki.Tk()
 win0.title('Анализ разможения покемонов')
-win0.geometry('800x535+400+200')
+win0.geometry('800x555+400+200')
 
 f_top = tki.LabelFrame(win0, text = 'Графики')
 f_top.place(x = 10, y = 10,  width = 340, height = 250)
@@ -157,7 +159,7 @@ for j in date_list:
 
 # создание двух скроллбаров
 scrl_x = ttk.Scrollbar(win0, command = tree.xview, orient = tki.HORIZONTAL)
-scrl_x.place(x = 15, y = 500, width = 750, height = 20)
+scrl_x.place(x = 15, y = 535, width = 750, height = 20)
 tree.configure(xscrollcommand = scrl_x.set)
 
 scrl_y = ttk.Scrollbar(win0, command = tree.yview, orient = tki.VERTICAL)
@@ -186,8 +188,42 @@ btn_2.place(x = 315, y = 260, width = 195, height = 35 )
 
 # btn_3 = tki.Button(win0, text = 'Добавить характеристику', font = ('Times', 10))
 # btn_3.place(x = 375, y = 190, width = 130, height = 35 )
-
-btn_4 = tki.Button(win0, text = "Обновить таблицу", font = ('Times', 12))
+def clck7():
+    '''
+    Parameters
+    ----------
+    -------
+    None.
+    '''
+    dbdb = pd.read_excel('C:/Work/Data/Pokname.xlsx',sheet_name='Sheet1', index_col=(0))
+    dbdb3 = pd.read_excel('C:/Work/Data/Pdx.xlsx',sheet_name='Sheet1', index_col=(0))
+    treet = ttk.Treeview(win0)
+    treet['show'] = 'headings'
+    colol = ('Название покемона', 'Данные')
+    for m_m_m in dbdb3.columns[1:]:
+        colol = colol + (str(m_m_m),)
+    treet['columns']=colol
+    treet.column('Название покемона', width= 150)
+    treet.heading('Название покемона', text = 'Название покемона')
+    treet.column('Данные', width= 50)
+    treet.heading('Данные', text = 'HP')
+    for m_m_m in colol[2:]:
+        treet.column(m_m_m, width= 50)
+        treet.heading(m_m_m, text = m_m_m)
+    date_listt = [list(k) for k in list(dbdb3.values)]
+    for m_m_m in range(len(list(dbdb.values))):
+        date_listt[m_m_m].insert(0,dbdb.values[m_m_m][0])
+    date_listt.reverse()
+    treet.place(x = 15 , y = 295, width=750, height=240)
+    for m_m_m in date_listt:
+        treet.insert('', 0, values = tuple(m_m_m))
+    scrl_xl = ttk.Scrollbar(win0, command = treet.xview, orient = tki.HORIZONTAL)
+    scrl_xl.place(x = 15, y = 535, width = 750, height = 20)
+    treet.configure(xscrollcommand = scrl_xl.set)
+    scrl_yl = ttk.Scrollbar(win0, command = treet.yview, orient = tki.VERTICAL)
+    scrl_yl.place(x = 765, y = 295, width = 20, height = 240)
+    treet.configure(yscrollcommand = scrl_yl.set)
+btn_4 = tki.Button(win0, text = "Обновить таблицу", font = ('Times', 12),command = clck7)
 btn_4.place(x = 500, y = 260, width = 140, height = 35 )
 def clck6():
     '''
