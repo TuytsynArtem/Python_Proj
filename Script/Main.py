@@ -82,6 +82,7 @@ db_3 = pd.read_excel('C:/Work/Data/Pdx.xlsx',sheet_name='Sheet1', index_col=(0))
 win0= tki.Tk()
 win0.title('Анализ разможения покемонов')
 win0.geometry('800x555+400+200')
+win0.resizable(False, False)
 
 f_top = tki.LabelFrame(win0, text = 'Графики')
 f_top.place(x = 10, y = 10,  width = 340, height = 250)
